@@ -1,0 +1,597 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#F3F6FA">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📚</text></svg>">
+<title>세은이 공부방</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jua&family=Noto+Sans+KR:wght@400;500;700&family=IBM+Plex+Mono:wght@500&display=swap">
+<style>
+:root{
+  --paper:#F3F6FA; --card:#FFFFFF; --ink:#1B2340; --muted:#5E6782; --line:#DCE2EC; --grid:rgba(47,111,235,.07);
+  --math:#2F6FEB; --math-soft:#E6EEFE; --sci:#0F9B83; --sci-soft:#DDF4EF;
+  --etc:#8A56D6; --etc-soft:#EFE7FB; --marker:#FFE45C; --marker-ink:#1B2340; --danger:#C8424B;
+  --shadow:0 1px 2px rgba(27,35,64,.06),0 6px 20px rgba(27,35,64,.06);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --paper:#11151F; --card:#1A202E; --ink:#E8ECF5; --muted:#9AA3BA; --line:#2B3345; --grid:rgba(120,160,255,.06);
+    --math:#7AA5FF; --math-soft:#1E2B4A; --sci:#4DD3B8; --sci-soft:#15332E;
+    --etc:#B994F2; --etc-soft:#2A2140; --marker:#F2D64B; --marker-ink:#1B2340; --danger:#F07A82;
+    --shadow:0 1px 2px rgba(0,0,0,.3),0 6px 20px rgba(0,0,0,.25);
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#11151F; --card:#1A202E; --ink:#E8ECF5; --muted:#9AA3BA; --line:#2B3345; --grid:rgba(120,160,255,.06);
+  --math:#7AA5FF; --math-soft:#1E2B4A; --sci:#4DD3B8; --sci-soft:#15332E;
+  --etc:#B994F2; --etc-soft:#2A2140; --marker:#F2D64B; --marker-ink:#1B2340; --danger:#F07A82;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 6px 20px rgba(0,0,0,.25);
+}
+*{box-sizing:border-box}
+html{color-scheme:light dark;-webkit-text-size-adjust:100%}
+body{margin:0}
+img{max-width:100%}
+[hidden]{display:none!important}
+body{
+  background-color:var(--paper);
+  background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+  background-size:24px 24px;
+  color:var(--ink); font-family:"Noto Sans KR",system-ui,-apple-system,"Apple SD Gothic Neo",sans-serif; font-size:15px; line-height:1.6;
+  padding:env(safe-area-inset-top,0px) 16px env(safe-area-inset-bottom,0px);
+}
+.wrap{max-width:1040px;margin:0 auto;padding-block:32px 56px;display:grid;gap:28px}
+h1,h2{font-family:"Jua","Noto Sans KR",sans-serif;font-weight:400;margin:0;text-wrap:balance;letter-spacing:.01em}
+h1{font-size:clamp(28px,5vw,40px);line-height:1.2}
+h1 .hl{background:linear-gradient(transparent 58%,var(--marker) 58%,var(--marker) 92%,transparent 92%);padding:0 2px}
+h2{font-size:21px}
+.label{font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+header{display:flex;flex-wrap:wrap;gap:12px 20px;align-items:end;justify-content:space-between}
+header p{margin:6px 0 0;color:var(--muted)}
+.quick{display:flex;gap:8px;flex-wrap:wrap}
+.quick a{font-size:13.5px;color:var(--ink);text-decoration:none;border:1px solid var(--line);background:var(--card);padding:6px 12px;border-radius:999px}
+.quick a:hover{border-color:var(--math)}
+
+/* search */
+.search{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:20px;box-shadow:var(--shadow);display:grid;gap:14px}
+.search form{display:flex;gap:10px;flex-wrap:wrap}
+.search input{flex:1 1 260px;min-width:0;font:inherit;font-size:18px;padding:14px 16px;border-radius:12px;border:2px solid var(--line);background:var(--paper);color:var(--ink)}
+.search input:focus{outline:none;border-color:var(--math)}
+.btn{font:inherit;font-weight:700;border:0;border-radius:12px;padding:0 22px;min-height:52px;cursor:pointer;background:var(--ink);color:var(--card)}
+.btn:hover{filter:brightness(1.15)}
+:focus-visible{outline:3px solid var(--marker);outline-offset:2px}
+.where{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.where .label{margin-right:4px}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:10px;overflow:hidden;background:var(--paper)}
+.seg button{font:inherit;font-size:13.5px;border:0;background:transparent;color:var(--muted);padding:7px 12px;cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--ink);color:var(--card)}
+.also{display:flex;flex-wrap:wrap;gap:8px;align-items:center;font-size:13.5px;color:var(--muted)}
+.also a{color:var(--math);font-weight:500}
+.hint{font-size:13px;color:var(--muted);margin:0}
+
+/* layout */
+.cols{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(0,1fr);gap:24px;align-items:start}
+@media (max-width:820px){.cols{grid-template-columns:1fr}}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:20px;display:grid;gap:16px}
+
+/* subjects */
+.subj{display:flex;gap:6px;flex-wrap:wrap}
+.subj button{font:inherit;font-weight:700;font-size:14px;border:2px solid transparent;border-radius:10px;padding:7px 14px;cursor:pointer;background:var(--paper);color:var(--muted)}
+.subj button[data-s="math"][aria-pressed="true"]{background:var(--math-soft);color:var(--math);border-color:var(--math)}
+.subj button[data-s="sci"][aria-pressed="true"]{background:var(--sci-soft);color:var(--sci);border-color:var(--sci)}
+.subj button[data-s="etc"][aria-pressed="true"]{background:var(--etc-soft);color:var(--etc);border-color:var(--etc)}
+.grades{display:flex;gap:6px}
+.grades button{font:inherit;font-size:13.5px;border:1px solid var(--line);background:transparent;color:var(--muted);border-radius:999px;padding:4px 12px;cursor:pointer}
+.grades button[aria-pressed="true"]{color:var(--ink);border-color:var(--ink);font-weight:700}
+.topics{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px}
+.topic{font:inherit;text-align:left;font-size:14.5px;border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:10px;padding:10px 12px;cursor:pointer;display:flex;justify-content:space-between;gap:8px;align-items:center}
+.topic:hover{border-color:var(--accent,var(--math));background:var(--accent-soft,var(--math-soft))}
+.topic .go{color:var(--muted);font-size:12px;flex:none}
+.bar{display:flex;flex-wrap:wrap;gap:10px 16px;align-items:center;justify-content:space-between}
+
+/* my lectures */
+.mylist{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+.mylist li{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:10px;align-items:center;border:1px solid var(--line);border-radius:12px;padding:10px 12px}
+.dot{width:10px;height:10px;border-radius:50%;background:var(--math)}
+.dot.sci{background:var(--sci)} .dot.etc{background:var(--etc)}
+.mylist a{color:var(--ink);font-weight:500;text-decoration:none;overflow-wrap:anywhere}
+.mylist a:hover{text-decoration:underline;text-decoration-color:var(--marker);text-decoration-thickness:3px}
+.x{font:inherit;border:0;background:transparent;color:var(--muted);cursor:pointer;font-size:18px;line-height:1;padding:4px 6px;border-radius:6px}
+.x:hover{color:var(--danger)}
+.empty{border:1.5px dashed var(--line);border-radius:12px;padding:14px;color:var(--muted);font-size:13.5px;margin:0}
+.empty ol{margin:6px 0 0;padding-left:18px}
+details.add summary{cursor:pointer;font-weight:700;color:var(--math);font-size:14px}
+.addform{display:grid;gap:8px;margin-top:10px}
+.addform input,.addform select{font:inherit;font-size:14px;padding:9px 11px;border-radius:10px;border:1px solid var(--line);background:var(--paper);color:var(--ink);width:100%}
+.addform .btn{min-height:42px;font-size:14px}
+.recent{display:flex;flex-wrap:wrap;gap:6px}
+.recent button{font:inherit;font-size:13px;border:1px solid var(--line);background:var(--paper);color:var(--ink);border-radius:999px;padding:4px 11px;cursor:pointer}
+.recent button:hover{border-color:var(--math)}
+footer{color:var(--muted);font-size:12.5px;text-align:center}
+
+/* daily line */
+.daily{display:flex;gap:14px;align-items:center;background:var(--ink);color:var(--card);border-radius:16px;padding:16px 20px}
+.daily .day{flex:none;font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:11.5px;letter-spacing:.06em;line-height:1.35;text-align:center;border:1px solid color-mix(in srgb,var(--card) 35%,transparent);border-radius:10px;padding:6px 9px;font-variant-numeric:tabular-nums}
+.daily .day b{display:block;font-size:20px;letter-spacing:0}
+.daily p{margin:0;font-family:"Jua","Noto Sans KR",sans-serif;font-size:clamp(17px,2.6vw,21px);line-height:1.45;text-wrap:balance}
+.daily p::before{content:"";display:inline-block;width:10px;height:10px;border-radius:2px;background:var(--marker);margin-right:10px;vertical-align:.12em}
+
+/* focus unit */
+.focus{background:var(--card);border:1px solid var(--line);border-top:4px solid var(--sci);border-radius:18px;padding:22px 20px;display:grid;gap:18px}
+.focus header p{max-width:60ch}
+.tag{display:inline-block;font-size:12px;font-weight:700;color:var(--sci);background:var(--sci-soft);border-radius:6px;padding:2px 8px}
+.vs{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media (max-width:600px){.vs{grid-template-columns:1fr}}
+.vs > div{background:var(--paper);border-radius:14px;padding:14px 16px}
+.vs h3{margin:0 0 4px;font-family:"Jua","Noto Sans KR",sans-serif;font-weight:400;font-size:19px}
+.vs .say{font-size:13px;color:var(--muted);margin:0 0 8px}
+.vs ul{margin:0;padding-left:18px;display:grid;gap:3px;font-size:14.5px}
+.water{display:flex;flex-wrap:wrap;gap:14px 22px;align-items:center;background:var(--sci-soft);border-radius:14px;padding:14px 16px}
+.water svg{flex:none}
+.water p{margin:0;font-size:14.5px;flex:1 1 260px}
+.water b{color:var(--sci)}
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:10px}
+.cards > div{border:1px solid var(--line);border-radius:12px;padding:12px 14px;font-size:14px}
+.cards strong{display:block;font-size:15px;margin-bottom:4px}
+.flame{display:flex;flex-wrap:wrap;gap:6px;margin:6px 0}
+.flame span{font-size:12.5px;border-radius:999px;padding:2px 9px;color:#1B2340;font-weight:500}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chips button{font:inherit;font-size:14px;border:1px solid var(--sci);color:var(--sci);background:transparent;border-radius:999px;padding:6px 13px;cursor:pointer}
+.chips button:hover{background:var(--sci-soft)}
+.quiz{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:16px;align-items:center;background:var(--paper);border-radius:14px;padding:16px}
+@media (max-width:600px){.quiz{grid-template-columns:1fr}}
+.quiz .ask{font-size:15px}
+.quiz .ask b{font-family:"Jua","Noto Sans KR",sans-serif;font-weight:400;font-size:30px;display:block;line-height:1.3}
+.opts{display:grid;grid-template-columns:repeat(2,minmax(84px,1fr));gap:8px}
+.opts button{font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:20px;border:2px solid var(--line);background:var(--card);color:var(--ink);border-radius:12px;padding:10px 12px;cursor:pointer}
+.opts button:hover:not(:disabled){border-color:var(--sci)}
+.opts button.ok{border-color:var(--sci);background:var(--sci-soft);color:var(--sci)}
+.opts button.no{border-color:var(--danger);color:var(--danger)}
+.qfoot{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:8px 16px;justify-content:space-between;align-items:center;font-size:13.5px;color:var(--muted)}
+.qfoot .score{font-family:"IBM Plex Mono",ui-monospace,monospace;font-variant-numeric:tabular-nums}
+.linkbtn{font:inherit;font-size:13.5px;border:0;background:transparent;color:var(--sci);font-weight:700;cursor:pointer;padding:4px 0}
+@media (prefers-reduced-motion:no-preference){.topic,.btn,.quick a{transition:background-color .15s,border-color .15s,filter .15s}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <section class="daily" aria-label="오늘의 한 줄">
+    <div class="day" id="dDay"><span id="dMon">9월</span><b id="dDate">19</b></div>
+    <p id="dLine">어제보다 한 문제만 더. 그게 쌓이면 실력이 돼.</p>
+  </section>
+  <header>
+    <div>
+      <div class="label">EBS 중학 · 로그인하면 무료</div>
+      <h1><span class="hl">세은이</span> 공부방</h1>
+      <p>필요한 단원만 검색해서 EBS 강의로 바로 가요.</p>
+    </div>
+    <nav class="quick" aria-label="바로가기">
+      <a href="https://mid.ebs.co.kr/" target="_blank" rel="noopener">EBS 중학 열기 ↗</a>
+      <a href="https://www.ebsmath.co.kr/" target="_blank" rel="noopener">EBS 수학 ↗</a>
+    </nav>
+  </header>
+
+  <section class="search" aria-label="강의 검색">
+    <form id="searchForm">
+      <input id="q" type="search" placeholder="예: 일차함수, 광합성, 연립방정식 활용" autocomplete="off" enterkeyhint="search" aria-label="검색어">
+      <button class="btn" type="submit">강의 찾기</button>
+    </form>
+    <div class="where">
+      <span class="label">어디서 찾을까</span>
+      <div class="seg" id="where" role="group" aria-label="검색할 곳">
+        <button type="button" data-w="mid" aria-pressed="true">EBS 중학</button>
+        <button type="button" data-w="math" aria-pressed="false">EBS 수학</button>
+        <button type="button" data-w="yt" aria-pressed="false">유튜브</button>
+      </div>
+    </div>
+    <div class="also" id="also" hidden></div>
+    <p class="hint">EBS에 로그인해 두면 검색 결과에서 강의를 누르는 대로 바로 볼 수 있어요.</p>
+  </section>
+
+  <section class="focus" aria-labelledby="t-focus">
+    <header>
+      <div>
+        <span class="tag">중2 과학 · 물질의 구성</span>
+        <h2 id="t-focus" style="margin-top:8px">원소와 원자, 헷갈리는 이유부터 잡자</h2>
+        <p class="hint" style="margin-top:6px">둘 다 「물질을 이루는 것」이라서 헷갈려요. 한 줄로 말하면 <b>원소는 종류, 원자는 알갱이</b>예요.</p>
+      </div>
+    </header>
+
+    <div class="vs">
+      <div>
+        <h3 style="color:var(--sci)">원소 = 종류(성분)</h3>
+        <p class="say">「무엇으로 되어 있나?」에 답할 때</p>
+        <ul>
+          <li>물질을 이루는 기본 성분</li>
+          <li>더 이상 다른 물질로 분해되지 않아요</li>
+          <li>지금까지 알려진 것은 118가지</li>
+          <li>물은 전기 분해하면 수소 + 산소 → 물은 원소가 아님</li>
+        </ul>
+      </div>
+      <div>
+        <h3 style="color:var(--math)">원자 = 알갱이(입자)</h3>
+        <p class="say">「몇 개로 되어 있나?」에 답할 때</p>
+        <ul>
+          <li>물질을 이루는 기본 입자</li>
+          <li>가운데 (+)전하 원자핵, 둘레에 (−)전하 전자</li>
+          <li>원자핵의 (+)전하량 = 전자 전체의 (−)전하량</li>
+          <li>그래서 원자는 전기적으로 중성</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="water">
+      <svg width="132" height="78" viewBox="0 0 132 78" role="img" aria-label="물 분자 모형: 산소 원자 1개에 수소 원자 2개">
+        <line x1="66" y1="34" x2="26" y2="58" stroke="#8A93AB" stroke-width="4"/>
+        <line x1="66" y1="34" x2="106" y2="58" stroke="#8A93AB" stroke-width="4"/>
+        <circle cx="66" cy="32" r="24" fill="#E4575F"/>
+        <circle cx="24" cy="58" r="15" fill="#F4F6FA" stroke="#8A93AB" stroke-width="2"/>
+        <circle cx="108" cy="58" r="15" fill="#F4F6FA" stroke="#8A93AB" stroke-width="2"/>
+        <text x="66" y="38" text-anchor="middle" font-size="17" font-weight="700" fill="#FFFFFF" font-family="IBM Plex Mono, monospace">O</text>
+        <text x="24" y="63" text-anchor="middle" font-size="14" font-weight="700" fill="#1B2340" font-family="IBM Plex Mono, monospace">H</text>
+        <text x="108" y="63" text-anchor="middle" font-size="14" font-weight="700" fill="#1B2340" font-family="IBM Plex Mono, monospace">H</text>
+      </svg>
+      <p>물 분자(H₂O) 하나를 보면 <b>원소는 2가지</b>(수소, 산소)이고 <b>원자는 3개</b>(수소 2개 + 산소 1개)예요. 시험에서 「원소 몇 종류? 원자 몇 개?」를 꼭 나눠서 물어봐요.</p>
+    </div>
+
+    <div class="cards">
+      <div><strong>분자</strong>물질의 성질을 가진 가장 작은 입자. 원자 여러 개가 결합해서 만들어져요. 예: 물 분자, 이산화 탄소 분자(CO₂)</div>
+      <div><strong>이온</strong>원자가 전자를 <b>잃으면 양이온</b>(+), <b>얻으면 음이온</b>(−). 예: Na⁺, Cl⁻</div>
+      <div><strong>원소 기호</strong>알파벳 대문자 1개, 또는 대문자 + 소문자. 두 번째 글자는 꼭 소문자예요(Co와 CO는 달라요!)</div>
+      <div><strong>불꽃 반응</strong>금속 원소마다 불꽃색이 달라요
+        <div class="flame">
+          <span style="background:#F7A1A6">리튬 빨강</span><span style="background:#FFE27A">나트륨 노랑</span><span style="background:#D6B8F5">칼륨 보라</span><span style="background:#FFC48A">칼슘 주황</span><span style="background:#8FE0D0">구리 청록</span><span style="background:#F7A1A6">스트론튬 빨강</span>
+        </div>
+        색이 비슷한 리튬·스트론튬은 <b>선 스펙트럼</b>으로 구별해요
+      </div>
+    </div>
+
+    <div>
+      <div class="label" style="margin-bottom:8px">이 부분만 강의로 보기</div>
+      <div class="chips" id="focusChips">
+        <button type="button">원소와 원자</button>
+        <button type="button">원소의 구별 불꽃 반응</button>
+        <button type="button">선 스펙트럼</button>
+        <button type="button">원자의 구조</button>
+        <button type="button">원소 기호</button>
+        <button type="button">분자와 분자식</button>
+        <button type="button">이온의 형성</button>
+      </div>
+    </div>
+
+    <div class="quiz" id="quiz" aria-live="polite">
+      <div class="ask"><span class="label">원소 기호 퀴즈</span><b id="qName">산소</b>의 원소 기호는?</div>
+      <div class="opts" id="qOpts"></div>
+      <div class="qfoot">
+        <span class="score" id="qScore">맞힌 문제 0 / 0</span>
+        <span id="qMsg"></span>
+        <button type="button" class="linkbtn" id="qNext">다음 문제 →</button>
+      </div>
+    </div>
+  </section>
+
+  <div class="cols">
+    <section class="panel" aria-labelledby="t-topics">
+      <div class="bar">
+        <h2 id="t-topics">단원 바로 찾기</h2>
+        <div class="grades" id="grades" role="group" aria-label="학년">
+          <button type="button" data-g="1" aria-pressed="false">중1</button>
+          <button type="button" data-g="2" aria-pressed="true">중2</button>
+          <button type="button" data-g="3" aria-pressed="false">중3</button>
+        </div>
+      </div>
+      <div class="subj" id="subj" role="group" aria-label="과목">
+        <button type="button" data-s="math" aria-pressed="true">수학</button>
+        <button type="button" data-s="sci" aria-pressed="false">과학</button>
+        <button type="button" data-s="etc" aria-pressed="false">국어 · 영어 · 사회</button>
+      </div>
+      <div class="topics" id="topics"></div>
+      <p class="hint">단원을 누르면 「중2 수학 일차함수」처럼 학년·과목을 붙여 검색해요.</p>
+    </section>
+
+    <aside class="panel" aria-labelledby="t-my">
+      <h2 id="t-my">내 강의</h2>
+      <ul class="mylist" id="mylist"></ul>
+      <details class="add" id="addBox">
+        <summary>+ 듣는 강의 저장하기</summary>
+        <form class="addform" id="addForm">
+          <input id="addName" placeholder="강의 이름 (예: 2학기 개념 완성 수학)" required>
+          <input id="addUrl" type="url" placeholder="EBS 강의 주소 붙여넣기" required>
+          <select id="addSubj" aria-label="과목">
+            <option value="math">수학</option>
+            <option value="sci">과학</option>
+            <option value="etc">그 밖의 과목</option>
+          </select>
+          <button class="btn" type="submit">저장</button>
+        </form>
+      </details>
+      <div>
+        <div class="label" style="margin-bottom:8px">최근 검색</div>
+        <div class="recent" id="recent"></div>
+      </div>
+    </aside>
+  </div>
+
+  <footer>강의 영상은 EBS에서 재생돼요 · 「내 강의」와 최근 검색은 지금 쓰는 기기에만 저장돼요</footer>
+</div>
+
+<script>
+(function(){
+  var TOPICS = {
+    math: {
+      1:["소인수분해","정수와 유리수","문자와 식","일차방정식","일차방정식의 활용","좌표평면과 그래프","정비례와 반비례","기본 도형","작도와 합동","평면도형","원과 부채꼴","입체도형","자료의 정리와 해석"],
+      2:["유리수와 순환소수","식의 계산","일차부등식","연립일차방정식","연립방정식의 활용","일차함수와 그래프","일차함수와 일차방정식","삼각형의 성질","사각형의 성질","도형의 닮음","피타고라스 정리","경우의 수","확률"],
+      3:["제곱근과 실수","근호를 포함한 식의 계산","다항식의 곱셈","인수분해","이차방정식","이차방정식의 활용","이차함수와 그래프","삼각비","원과 직선","원주각","대푯값과 산포도","상관관계"]
+    },
+    sci: {
+      1:["지권의 변화","광물과 암석","여러 가지 힘","생물의 구성","생물의 다양성","기체의 성질","물질의 상태 변화","빛과 파동","과학과 나의 미래"],
+      2:["물질의 구성","원소와 원자","불꽃 반응","분자와 이온","전기와 자기","태양계","식물과 에너지","광합성","동물과 에너지","소화 순환 호흡 배설","물질의 특성","수권과 해수의 순환","열과 우리 생활"],
+      3:["화학 반응의 규칙","기권과 날씨","운동과 에너지","자극과 반응","생식과 유전","멘델 유전","에너지 전환과 보존","별과 우주","과학기술과 인류 문명"]
+    },
+    etc: {
+      1:["국어 문법 품사","시 읽기","영어 문법 be동사","영어 일반동사","영어 듣기","사회 지도 읽기","역사 선사시대","한자"],
+      2:["국어 음운","소설 읽기","영어 to부정사","영어 동명사","영어 비교급","사회 인권과 헌법","역사 조선","영어 독해"],
+      3:["국어 문장 성분","논설문 쓰기","영어 관계대명사","영어 현재완료","영어 수동태","사회 경제","역사 근현대","영어 서술형"]
+    }
+  };
+  var SUBJ_NAME = {math:"수학", sci:"과학", etc:""};
+
+  // Storage (per device) — every access guarded
+  function load(k, d){ try{ var v = localStorage.getItem(k); return v ? JSON.parse(v) : d; }catch(e){ return d; } }
+  function save(k, v){ try{ localStorage.setItem(k, JSON.stringify(v)); }catch(e){} }
+
+  var state = {
+    where: load("seeun.where","mid"),
+    subj: load("seeun.subj","math"),
+    grade: load("seeun.grade","2"),
+    my: load("seeun.my", []),
+    recent: load("seeun.recent", [])
+  };
+
+  function clean(q){ return q.replace(/[\/#]/g," ").replace(/\s+/g," ").trim(); }
+  function urlFor(where, q){
+    if(where === "math") return "https://www.ebsmath.co.kr/searchNew?cloudkey=&query=" + encodeURIComponent(q);
+    if(where === "yt") return "https://www.youtube.com/results?search_query=" + encodeURIComponent("EBS 중학 " + q);
+    return "https://mid.ebs.co.kr/search/index?clnk=search#all/" + q;
+  }
+  var WHERE_NAME = {mid:"EBS 중학", math:"EBS 수학", yt:"유튜브"};
+
+  var $ = function(id){ return document.getElementById(id); };
+
+  function go(raw){
+    var q = clean(raw || "");
+    if(!q) { $("q").focus(); return; }
+    window.open(urlFor(state.where, q), "_blank", "noopener");
+    state.recent = [q].concat(state.recent.filter(function(r){ return r !== q; })).slice(0, 10);
+    save("seeun.recent", state.recent);
+    renderRecent();
+    renderAlso(q);
+  }
+
+  function renderAlso(q){
+    var box = $("also");
+    box.textContent = "";
+    var lead = document.createElement("span");
+    lead.textContent = "「" + q + "」 다른 곳에서도 찾기:";
+    box.appendChild(lead);
+    ["mid","math","yt"].forEach(function(w){
+      if(w === state.where) return;
+      var a = document.createElement("a");
+      a.href = urlFor(w, q); a.target = "_blank"; a.rel = "noopener";
+      a.textContent = WHERE_NAME[w] + " ↗";
+      box.appendChild(a);
+    });
+    box.hidden = false;
+  }
+
+  function setPressed(groupId, attr, val){
+    Array.prototype.forEach.call($(groupId).querySelectorAll("button"), function(b){
+      b.setAttribute("aria-pressed", String(b.getAttribute(attr) === val));
+    });
+  }
+
+  function renderTopics(){
+    setPressed("subj","data-s",state.subj);
+    setPressed("grades","data-g",state.grade);
+    var box = $("topics");
+    var accent = {math:["--math","--math-soft"], sci:["--sci","--sci-soft"], etc:["--etc","--etc-soft"]}[state.subj];
+    box.style.setProperty("--accent","var("+accent[0]+")");
+    box.style.setProperty("--accent-soft","var("+accent[1]+")");
+    box.textContent = "";
+    TOPICS[state.subj][state.grade].forEach(function(t){
+      var b = document.createElement("button");
+      b.type = "button"; b.className = "topic";
+      var s1 = document.createElement("span"); s1.textContent = t;
+      var s2 = document.createElement("span"); s2.className = "go"; s2.textContent = "↗";
+      b.appendChild(s1); b.appendChild(s2);
+      b.addEventListener("click", function(){
+        var q = "중" + state.grade + " " + (SUBJ_NAME[state.subj] ? SUBJ_NAME[state.subj] + " " : "") + t;
+        $("q").value = q;
+        go(q);
+      });
+      box.appendChild(b);
+    });
+  }
+
+  function renderMy(){
+    var ul = $("mylist");
+    ul.textContent = "";
+    if(!state.my.length){
+      var li = document.createElement("li");
+      li.style.display = "block"; li.style.border = "0"; li.style.padding = "0";
+      li.innerHTML = '<div class="empty">아직 저장한 강의가 없어요. 듣고 있는 강좌를 저장해 두면 여기서 바로 이어볼 수 있어요.<ol><li>EBS에서 강좌 페이지를 열고</li><li>주소창의 주소를 복사해서</li><li>아래 「듣는 강의 저장하기」에 붙여넣기</li></ol></div>';
+      ul.appendChild(li);
+      $("addBox").open = true;
+      return;
+    }
+    state.my.forEach(function(item, i){
+      var li = document.createElement("li");
+      var dot = document.createElement("span"); dot.className = "dot " + item.subj;
+      var a = document.createElement("a");
+      a.href = item.url; a.target = "_blank"; a.rel = "noopener"; a.textContent = item.name;
+      var x = document.createElement("button");
+      x.type = "button"; x.className = "x"; x.textContent = "×";
+      x.setAttribute("aria-label", item.name + " 삭제");
+      x.addEventListener("click", function(){
+        if(!confirm("「" + item.name + "」을(를) 내 강의에서 뺄까요?")) return;
+        state.my.splice(i, 1); save("seeun.my", state.my); renderMy();
+      });
+      li.appendChild(dot); li.appendChild(a); li.appendChild(x);
+      ul.appendChild(li);
+    });
+  }
+
+  function renderRecent(){
+    var box = $("recent");
+    box.textContent = "";
+    var list = state.recent.length ? state.recent : ["일차함수","광합성","피타고라스 정리"];
+    list.forEach(function(q){
+      var b = document.createElement("button");
+      b.type = "button"; b.textContent = q;
+      b.addEventListener("click", function(){ $("q").value = q; go(q); });
+      box.appendChild(b);
+    });
+    if(!state.recent.length){
+      var s = document.createElement("span");
+      s.className = "hint"; s.textContent = "← 이렇게 검색해 보세요";
+      box.appendChild(s);
+    }
+  }
+
+  $("searchForm").addEventListener("submit", function(e){ e.preventDefault(); go($("q").value); });
+  $("where").addEventListener("click", function(e){
+    var b = e.target.closest("button"); if(!b) return;
+    state.where = b.getAttribute("data-w"); save("seeun.where", state.where);
+    setPressed("where","data-w",state.where);
+  });
+  $("subj").addEventListener("click", function(e){
+    var b = e.target.closest("button"); if(!b) return;
+    state.subj = b.getAttribute("data-s"); save("seeun.subj", state.subj); renderTopics();
+  });
+  $("grades").addEventListener("click", function(e){
+    var b = e.target.closest("button"); if(!b) return;
+    state.grade = b.getAttribute("data-g"); save("seeun.grade", state.grade); renderTopics();
+  });
+  $("addForm").addEventListener("submit", function(e){
+    e.preventDefault();
+    var name = $("addName").value.trim(), url = $("addUrl").value.trim();
+    if(!name || !/^https?:\/\//.test(url)) return;
+    state.my.unshift({name:name, url:url, subj:$("addSubj").value});
+    save("seeun.my", state.my);
+    $("addName").value = ""; $("addUrl").value = "";
+    renderMy();
+  });
+
+  // focus unit: search chips
+  $("focusChips").addEventListener("click", function(e){
+    var b = e.target.closest("button"); if(!b) return;
+    var q = "중2 과학 " + b.textContent;
+    $("q").value = q; go(q);
+  });
+
+  // element symbol quiz
+  var ELEMENTS = [["수소","H"],["헬륨","He"],["리튬","Li"],["베릴륨","Be"],["붕소","B"],["탄소","C"],["질소","N"],["산소","O"],["플루오린","F"],["네온","Ne"],["나트륨","Na"],["마그네슘","Mg"],["알루미늄","Al"],["규소","Si"],["인","P"],["황","S"],["염소","Cl"],["아르곤","Ar"],["칼륨","K"],["칼슘","Ca"],["철","Fe"],["구리","Cu"],["아연","Zn"],["은","Ag"],["금","Au"],["수은","Hg"],["납","Pb"],["아이오딘","I"],["코발트","Co"],["니켈","Ni"]];
+  var quiz = load("seeun.quiz", {right:0, total:0});
+  var cur = null;
+  function shuffle(a){ for(var i=a.length-1;i>0;i--){ var j=Math.floor(Math.random()*(i+1)); var t=a[i]; a[i]=a[j]; a[j]=t; } return a; }
+  function nextQ(){
+    var pick = ELEMENTS[Math.floor(Math.random()*ELEMENTS.length)];
+    if(cur && pick[0] === cur[0]) pick = ELEMENTS[(ELEMENTS.indexOf(pick)+1) % ELEMENTS.length];
+    cur = pick;
+    var wrong = shuffle(ELEMENTS.filter(function(e){ return e[1] !== cur[1]; })).slice(0,3).map(function(e){ return e[1]; });
+    var opts = shuffle(wrong.concat(cur[1]));
+    $("qName").textContent = cur[0];
+    $("qMsg").textContent = "";
+    var box = $("qOpts"); box.textContent = "";
+    opts.forEach(function(sym){
+      var b = document.createElement("button");
+      b.type = "button"; b.textContent = sym;
+      b.addEventListener("click", function(){
+        var all = box.querySelectorAll("button");
+        Array.prototype.forEach.call(all, function(x){ x.disabled = true; if(x.textContent === cur[1]) x.className = "ok"; });
+        quiz.total++;
+        if(sym === cur[1]){ quiz.right++; $("qMsg").textContent = "정답!"; }
+        else { b.className = "no"; $("qMsg").textContent = cur[0] + "은(는) " + cur[1] + " 이에요"; }
+        save("seeun.quiz", quiz); renderScore();
+      });
+      box.appendChild(b);
+    });
+  }
+  function renderScore(){ $("qScore").textContent = "맞힌 문제 " + quiz.right + " / " + quiz.total; }
+  $("qNext").addEventListener("click", nextQ);
+
+  // daily line — changes at local midnight
+  var LINES = [
+    "어제보다 한 문제만 더. 그게 쌓이면 실력이 돼.",
+    "모르는 걸 알게 된 날이 제일 많이 큰 날이야.",
+    "틀린 문제는 실패가 아니라 다음 시험의 정답지야.",
+    "10분만 해 보자. 시작하면 생각보다 오래 할 수 있어.",
+    "천천히 가도 멈추지만 않으면 도착해.",
+    "오늘 이해한 한 가지는 평생 내 것이 돼.",
+    "어려운 건 내가 지금 자라고 있다는 신호야.",
+    "공부는 남과의 경쟁이 아니라 어제의 나와의 경쟁이야.",
+    "잘하는 사람도 처음엔 다 몰랐어.",
+    "집중한 30분이 딴생각한 3시간보다 세.",
+    "개념을 알면 문제는 그냥 연습이야.",
+    "외운 건 잊어도 이해한 건 남아.",
+    "휴대폰은 잠깐 멀리, 꿈은 가까이.",
+    "오늘 할 일을 오늘 끝내면 내일이 가벼워져.",
+    "질문하는 건 부끄러운 게 아니라 제일 빠른 길이야.",
+    "노트 한 줄 정리가 시험 전날의 나를 구해 줘.",
+    "하기 싫은 날 한 것이 진짜 실력이 돼.",
+    "완벽하게 말고, 꾸준하게.",
+    "문제를 풀고 나면 '왜 이 답일까'를 한 번 더.",
+    "작은 목표 하나 끝내기, 그게 오늘의 승리야.",
+    "머리로 이해하고, 손으로 풀고, 입으로 설명해 봐.",
+    "지금 흘린 땀은 나중에 여유가 되어 돌아와.",
+    "세상에 쓸모없는 공부는 없어.",
+    "틀린 이유를 찾으면 같은 실수는 다시 안 해.",
+    "잘 쉬는 것도 공부야. 대신 쉬는 시간은 정해 두기.",
+    "포기하고 싶을 때 딱 한 문제만 더.",
+    "모르는 단어 하나가 교과서 한 쪽을 막아. 찾아보자.",
+    "나를 믿어 주는 사람이 있어. 나도 나를 믿자.",
+    "시험은 한 번이지만 공부한 힘은 계속 남아.",
+    "천재는 1%의 영감과 99%의 노력이라고 했어.",
+    "오늘의 계획: 할 수 있는 만큼보다 딱 조금 더.",
+    "헷갈리는 두 개를 비교해 보면 둘 다 확실해져.",
+    "빨리 푸는 것보다 정확하게 푸는 게 먼저야.",
+    "매일 조금씩이 가끔 많이보다 강해.",
+    "배운 날 복습하면 기억이 두 배로 오래 가.",
+    "지금 이 시간은 미래의 내가 제일 고마워할 시간이야.",
+    "문제가 안 풀리면 개념으로 돌아가. 답은 거기 있어.",
+    "비교는 어제의 나하고만.",
+    "한 걸음씩. 계단은 원래 하나씩 오르는 거야.",
+    "끝까지 해 본 사람만 자기 실력을 알아.",
+    "오늘도 책상에 앉은 너, 이미 반은 해냈어.",
+    "쉬운 문제를 절대 틀리지 않는 게 진짜 실력이야.",
+    "공부한 흔적은 절대 사라지지 않아.",
+    "꿈은 날짜를 적으면 계획이 돼.",
+    "좋아하는 과목 하나가 공부 전체를 끌고 가.",
+    "모르는 걸 아는 것, 그게 공부의 시작이야.",
+    "하루 한 번, 오늘 배운 걸 누구에게 설명해 보기.",
+    "힘들면 잠깐 쉬어도 돼. 그만두지만 않으면 돼.",
+    "실수는 연습 때 많이, 시험 때 적게.",
+    "오늘의 나는 어제의 내가 꿈꾸던 만큼 왔어.",
+    "지금 어려운 그 단원, 한 달 뒤엔 제일 쉬울 거야.",
+    "노력은 배신하지 않아. 다만 조금 늦게 도착할 뿐.",
+    "답을 보기 전에 3분만 더 고민해 보기.",
+    "기본이 탄탄하면 응용은 따라와.",
+    "공부는 쌓는 거야. 오늘 벽돌 하나.",
+    "세은아, 오늘도 응원해!"
+  ];
+  (function(){
+    var now = new Date();
+    var dayNo = Math.floor((Date.UTC(now.getFullYear(), now.getMonth(), now.getDate())) / 86400000);
+    $("dLine").textContent = LINES[dayNo % LINES.length];
+    $("dMon").textContent = (now.getMonth()+1) + "월";
+    $("dDate").textContent = now.getDate();
+  })();
+
+  setPressed("where","data-w",state.where);
+  renderTopics(); renderMy(); renderRecent(); renderScore(); nextQ();
+})();
+</script>
+</body>
+</html>
