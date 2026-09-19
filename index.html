@@ -262,10 +262,10 @@ footer{color:var(--muted);font-size:12.5px;text-align:center}
     </div>
 
     <div class="quiz" id="quiz" aria-live="polite">
-      <div class="ask"><span class="label">원소 기호 퀴즈</span><b id="qName">산소</b>의 원소 기호는?</div>
+      <div class="ask"><span class="label">원소 기호 퀴즈</span><div id="qAsk"><b id="qName">산소</b>의 원소 기호는?</div><p id="qEnd" hidden style="margin:6px 0 0;font-size:15.5px"><span id="qEndMsg"></span></p></div>
       <div class="opts" id="qOpts"></div>
       <div class="qfoot">
-        <span class="score" id="qScore">맞힌 문제 0 / 0</span>
+        <span class="score" id="qScore">푼 문제 0 / 30</span>
         <span id="qMsg"></span>
         <button type="button" class="linkbtn" id="qNext">다음 문제 →</button>
       </div>
@@ -493,34 +493,59 @@ footer{color:var(--muted);font-size:12.5px;text-align:center}
 
   // element symbol quiz
   var ELEMENTS = [["수소","H"],["헬륨","He"],["리튬","Li"],["베릴륨","Be"],["붕소","B"],["탄소","C"],["질소","N"],["산소","O"],["플루오린","F"],["네온","Ne"],["나트륨","Na"],["마그네슘","Mg"],["알루미늄","Al"],["규소","Si"],["인","P"],["황","S"],["염소","Cl"],["아르곤","Ar"],["칼륨","K"],["칼슘","Ca"],["철","Fe"],["구리","Cu"],["아연","Zn"],["은","Ag"],["금","Au"],["수은","Hg"],["납","Pb"],["아이오딘","I"],["코발트","Co"],["니켈","Ni"]];
-  var quiz = load("seeun.quiz", {right:0, total:0});
-  var cur = null;
+  // one round = every element once, in shuffled order; answered ones never come back that round
   function shuffle(a){ for(var i=a.length-1;i>0;i--){ var j=Math.floor(Math.random()*(i+1)); var t=a[i]; a[i]=a[j]; a[j]=t; } return a; }
-  function nextQ(){
-    var pick = ELEMENTS[Math.floor(Math.random()*ELEMENTS.length)];
-    if(cur && pick[0] === cur[0]) pick = ELEMENTS[(ELEMENTS.indexOf(pick)+1) % ELEMENTS.length];
-    cur = pick;
-    var wrong = shuffle(ELEMENTS.filter(function(e){ return e[1] !== cur[1]; })).slice(0,3).map(function(e){ return e[1]; });
-    var opts = shuffle(wrong.concat(cur[1]));
-    $("qName").textContent = cur[0];
-    $("qMsg").textContent = "";
+  var SYM = {}; ELEMENTS.forEach(function(e){ SYM[e[0]] = e[1]; });
+  function newRound(names){ return {deck: shuffle(names.slice()), size: names.length, right: 0, wrong: []}; }
+  var quiz = load("seeun.quiz2", null);
+  if(!quiz || !Array.isArray(quiz.deck) || !quiz.deck.every(function(n){ return SYM[n]; })) quiz = newRound(Object.keys(SYM));
+  var answered = false;
+
+  function showQ(){
     var box = $("qOpts"); box.textContent = "";
-    opts.forEach(function(sym){
+    $("qMsg").textContent = "";
+    answered = false;
+    $("qNext").hidden = true;
+    if(!quiz.deck.length){ showEnd(); return; }
+    $("qAsk").hidden = false; $("qEnd").hidden = true;
+    var name = quiz.deck[0], ans = SYM[name];
+    var wrong = shuffle(ELEMENTS.filter(function(e){ return e[1] !== ans; })).slice(0,3).map(function(e){ return e[1]; });
+    $("qName").textContent = name;
+    shuffle(wrong.concat(ans)).forEach(function(sym){
       var b = document.createElement("button");
       b.type = "button"; b.textContent = sym;
       b.addEventListener("click", function(){
-        var all = box.querySelectorAll("button");
-        Array.prototype.forEach.call(all, function(x){ x.disabled = true; if(x.textContent === cur[1]) x.className = "ok"; });
-        quiz.total++;
-        if(sym === cur[1]){ quiz.right++; $("qMsg").textContent = "정답!"; }
-        else { b.className = "no"; $("qMsg").textContent = cur[0] + "은(는) " + cur[1] + " 이에요"; }
-        save("seeun.quiz", quiz); renderScore();
+        if(answered) return;
+        answered = true;
+        Array.prototype.forEach.call(box.querySelectorAll("button"), function(x){ x.disabled = true; if(x.textContent === ans) x.className = "ok"; });
+        if(sym === ans){ quiz.right++; $("qMsg").textContent = "정답!"; }
+        else { b.className = "no"; quiz.wrong.push(name); $("qMsg").textContent = name + "은(는) " + ans + " 이에요"; }
+        quiz.deck.shift();
+        save("seeun.quiz2", quiz); renderScore();
+        $("qNext").textContent = quiz.deck.length ? "다음 문제 →" : "결과 보기 →";
+        $("qNext").hidden = false; $("qNext").focus();
       });
       box.appendChild(b);
     });
   }
-  function renderScore(){ $("qScore").textContent = "맞힌 문제 " + quiz.right + " / " + quiz.total; }
-  $("qNext").addEventListener("click", nextQ);
+  function showEnd(){
+    $("qAsk").hidden = true; $("qEnd").hidden = false;
+    var box = $("qOpts"); box.textContent = "";
+    $("qEndMsg").textContent = quiz.size + "문제 다 풀었어요! " + quiz.size + "문제 중 " + quiz.right + "문제 맞혔어요." + (quiz.wrong.length ? " 틀린 것: " + quiz.wrong.join(", ") : " 전부 정답이에요!");
+    function btn(label, names){
+      var b = document.createElement("button");
+      b.type = "button"; b.textContent = label; b.style.fontFamily = "inherit"; b.style.fontSize = "15px";
+      b.addEventListener("click", function(){ quiz = newRound(names); save("seeun.quiz2", quiz); renderScore(); showQ(); });
+      box.appendChild(b);
+    }
+    if(quiz.wrong.length) btn("틀린 것만 다시", quiz.wrong);
+    btn("처음부터 다시", Object.keys(SYM));
+  }
+  function renderScore(){
+    var done = quiz.size - quiz.deck.length;
+    $("qScore").textContent = "푼 문제 " + done + " / " + quiz.size + " · 맞힌 문제 " + quiz.right;
+  }
+  $("qNext").addEventListener("click", showQ);
 
   // daily line — changes at local midnight
   var LINES = [
@@ -590,7 +615,7 @@ footer{color:var(--muted);font-size:12.5px;text-align:center}
   })();
 
   setPressed("where","data-w",state.where);
-  renderTopics(); renderMy(); renderRecent(); renderScore(); nextQ();
+  renderTopics(); renderMy(); renderRecent(); renderScore(); showQ();
 })();
 </script>
 </body>
