@@ -13,13 +13,16 @@
 :root{
   --paper:#F3F6FA; --card:#FFFFFF; --ink:#1B2340; --muted:#5E6782; --line:#DCE2EC; --grid:rgba(47,111,235,.07);
   --math:#2F6FEB; --math-soft:#E6EEFE; --sci:#0F9B83; --sci-soft:#DDF4EF;
-  --etc:#8A56D6; --etc-soft:#EFE7FB; --marker:#FFE45C; --marker-ink:#1B2340; --danger:#C8424B;
+  --etc:#8A56D6; --etc-soft:#EFE7FB;
+  --kor:#D0433A; --kor-soft:#FCE8E6; --eng:#C46A00; --eng-soft:#FDF0DC; --soc:#0B83A6; --soc-soft:#DDF1F7; --tech:#5F7417; --tech-soft:#EDF3D9;
+  --marker:#FFE45C; --marker-ink:#1B2340; --danger:#C8424B;
   --shadow:0 1px 2px rgba(27,35,64,.06),0 6px 20px rgba(27,35,64,.06);
 }
 @media (prefers-color-scheme: dark){
   :root:not([data-theme="light"]){
     --paper:#11151F; --card:#1A202E; --ink:#E8ECF5; --muted:#9AA3BA; --line:#2B3345; --grid:rgba(120,160,255,.06);
     --math:#7AA5FF; --math-soft:#1E2B4A; --sci:#4DD3B8; --sci-soft:#15332E;
+    --kor:#FF8A80; --kor-soft:#3A1F1E; --eng:#FFB547; --eng-soft:#3A2A12; --soc:#5CC8E8; --soc-soft:#14303A; --tech:#B5D05A; --tech-soft:#28301A;
     --etc:#B994F2; --etc-soft:#2A2140; --marker:#F2D64B; --marker-ink:#1B2340; --danger:#F07A82;
     --shadow:0 1px 2px rgba(0,0,0,.3),0 6px 20px rgba(0,0,0,.25);
   }
@@ -27,6 +30,7 @@
 :root[data-theme="dark"]{
   --paper:#11151F; --card:#1A202E; --ink:#E8ECF5; --muted:#9AA3BA; --line:#2B3345; --grid:rgba(120,160,255,.06);
   --math:#7AA5FF; --math-soft:#1E2B4A; --sci:#4DD3B8; --sci-soft:#15332E;
+  --kor:#FF8A80; --kor-soft:#3A1F1E; --eng:#FFB547; --eng-soft:#3A2A12; --soc:#5CC8E8; --soc-soft:#14303A; --tech:#B5D05A; --tech-soft:#28301A;
   --etc:#B994F2; --etc-soft:#2A2140; --marker:#F2D64B; --marker-ink:#1B2340; --danger:#F07A82;
   --shadow:0 1px 2px rgba(0,0,0,.3),0 6px 20px rgba(0,0,0,.25);
 }
@@ -78,24 +82,28 @@ header p{margin:6px 0 0;color:var(--muted)}
 
 /* subjects */
 .subj{display:flex;gap:6px;flex-wrap:wrap}
-.subj button{font:inherit;font-weight:700;font-size:14px;border:2px solid transparent;border-radius:10px;padding:7px 14px;cursor:pointer;background:var(--paper);color:var(--muted)}
-.subj button[data-s="math"][aria-pressed="true"]{background:var(--math-soft);color:var(--math);border-color:var(--math)}
-.subj button[data-s="sci"][aria-pressed="true"]{background:var(--sci-soft);color:var(--sci);border-color:var(--sci)}
-.subj button[data-s="etc"][aria-pressed="true"]{background:var(--etc-soft);color:var(--etc);border-color:var(--etc)}
+.subj button{font:inherit;font-weight:700;font-size:14px;min-width:0;border:2px solid transparent;border-radius:10px;padding:7px 14px;cursor:pointer;background:var(--paper);color:var(--muted)}
+.g-math{--c:var(--math);--cs:var(--math-soft)} .g-sci{--c:var(--sci);--cs:var(--sci-soft)} .g-kor{--c:var(--kor);--cs:var(--kor-soft)}
+.g-eng{--c:var(--eng);--cs:var(--eng-soft)} .g-soc{--c:var(--soc);--cs:var(--soc-soft)} .g-tech{--c:var(--tech);--cs:var(--tech-soft)} .g-etc{--c:var(--etc);--cs:var(--etc-soft)}
+.subjrows{display:grid;gap:8px}
+.subjrow{display:flex;gap:10px;align-items:baseline;flex-wrap:wrap}
+.subjrow .label{flex:none;width:84px;white-space:nowrap}
+.subj button[aria-pressed="true"]{background:var(--cs);color:var(--c);border-color:var(--c)}
+.subj button:hover{color:var(--c)}
 .grades{display:flex;gap:6px}
 .grades button{font:inherit;font-size:13.5px;border:1px solid var(--line);background:transparent;color:var(--muted);border-radius:999px;padding:4px 12px;cursor:pointer}
 .grades button[aria-pressed="true"]{color:var(--ink);border-color:var(--ink);font-weight:700}
 .topics{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px}
 .topic{font:inherit;text-align:left;font-size:14.5px;border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:10px;padding:10px 12px;cursor:pointer;display:flex;justify-content:space-between;gap:8px;align-items:center}
-.topic:hover{border-color:var(--accent,var(--math));background:var(--accent-soft,var(--math-soft))}
+.topic:hover{border-color:var(--c);background:var(--cs)}
 .topic .go{color:var(--muted);font-size:12px;flex:none}
 .bar{display:flex;flex-wrap:wrap;gap:10px 16px;align-items:center;justify-content:space-between}
 
 /* my lectures */
 .mylist{list-style:none;margin:0;padding:0;display:grid;gap:8px}
-.mylist li{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:10px;align-items:center;border:1px solid var(--line);border-radius:12px;padding:10px 12px}
+.mylist > li{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:10px;align-items:center;border:1px solid var(--line);border-radius:12px;padding:10px 12px}
 .dot{width:10px;height:10px;border-radius:50%;background:var(--math)}
-.dot.sci{background:var(--sci)} .dot.etc{background:var(--etc)}
+.dot{background:var(--c)}
 .mylist a{color:var(--ink);font-weight:500;text-decoration:none;overflow-wrap:anywhere}
 .mylist a:hover{text-decoration:underline;text-decoration-color:var(--marker);text-decoration-thickness:3px}
 .x{font:inherit;border:0;background:transparent;color:var(--muted);cursor:pointer;font-size:18px;line-height:1;padding:4px 6px;border-radius:6px}
@@ -282,10 +290,9 @@ footer{color:var(--muted);font-size:12.5px;text-align:center}
           <button type="button" data-g="3" aria-pressed="false">중3</button>
         </div>
       </div>
-      <div class="subj" id="subj" role="group" aria-label="과목">
-        <button type="button" data-s="math" aria-pressed="true">수학</button>
-        <button type="button" data-s="sci" aria-pressed="false">과학</button>
-        <button type="button" data-s="etc" aria-pressed="false">국어 · 영어 · 사회</button>
+      <div class="subjrows" id="subj" role="group" aria-label="과목">
+        <div class="subjrow"><span class="label">주요 과목</span><div class="subj" id="subjMain"></div></div>
+        <div class="subjrow"><span class="label">그 밖의 과목</span><div class="subj" id="subjMore"></div></div>
       </div>
       <div class="topics" id="topics"></div>
       <p class="hint">단원을 누르면 「중2 수학 일차함수」처럼 학년·과목을 붙여 검색해요.</p>
@@ -299,11 +306,7 @@ footer{color:var(--muted);font-size:12.5px;text-align:center}
         <form class="addform" id="addForm">
           <input id="addName" placeholder="강의 이름 (예: 2학기 개념 완성 수학)" required>
           <input id="addUrl" type="url" placeholder="EBS 강의 주소 붙여넣기" required>
-          <select id="addSubj" aria-label="과목">
-            <option value="math">수학</option>
-            <option value="sci">과학</option>
-            <option value="etc">그 밖의 과목</option>
-          </select>
+          <select id="addSubj" aria-label="과목"></select>
           <button class="btn" type="submit">저장</button>
         </form>
       </details>
@@ -319,6 +322,22 @@ footer{color:var(--muted);font-size:12.5px;text-align:center}
 
 <script>
 (function(){
+  // 과목: key, 이름, 색 묶음, 줄(main/more). 단원은 학년별(1·2·3) 또는 공통(all)
+  var SUBJECTS = [
+    {k:"kor",  n:"국어",   g:"kor",  row:"main"},
+    {k:"eng",  n:"영어",   g:"eng",  row:"main"},
+    {k:"math", n:"수학",   g:"math", row:"main"},
+    {k:"sci",  n:"과학",   g:"sci",  row:"main"},
+    {k:"soc",  n:"사회",   g:"soc",  row:"main"},
+    {k:"hist", n:"역사",   g:"soc",  row:"main"},
+    {k:"eth",  n:"도덕",   g:"soc",  row:"more"},
+    {k:"tech", n:"기술·가정", g:"tech", row:"more"},
+    {k:"info", n:"정보",   g:"tech", row:"more"},
+    {k:"hanja",n:"한문",   g:"etc",  row:"more"},
+    {k:"music",n:"음악",   g:"etc",  row:"more"},
+    {k:"art",  n:"미술",   g:"etc",  row:"more"},
+    {k:"pe",   n:"체육",   g:"etc",  row:"more"}
+  ];
   var TOPICS = {
     math: {
       1:["소인수분해","정수와 유리수","문자와 식","일차방정식","일차방정식의 활용","좌표평면과 그래프","정비례와 반비례","기본 도형","작도와 합동","평면도형","원과 부채꼴","입체도형","자료의 정리와 해석"],
@@ -330,13 +349,29 @@ footer{color:var(--muted);font-size:12.5px;text-align:center}
       2:["물질의 구성","원소와 원자","불꽃 반응","분자와 이온","전기와 자기","태양계","식물과 에너지","광합성","동물과 에너지","소화 순환 호흡 배설","물질의 특성","수권과 해수의 순환","열과 우리 생활"],
       3:["화학 반응의 규칙","기권과 날씨","운동과 에너지","자극과 반응","생식과 유전","멘델 유전","에너지 전환과 보존","별과 우주","과학기술과 인류 문명"]
     },
-    etc: {
-      1:["국어 문법 품사","시 읽기","영어 문법 be동사","영어 일반동사","영어 듣기","사회 지도 읽기","역사 선사시대","한자"],
-      2:["국어 음운","소설 읽기","영어 to부정사","영어 동명사","영어 비교급","사회 인권과 헌법","역사 조선","영어 독해"],
-      3:["국어 문장 성분","논설문 쓰기","영어 관계대명사","영어 현재완료","영어 수동태","사회 경제","역사 근현대","영어 서술형"]
-    }
+    kor: {
+      1:["품사","비유와 상징","운율","문학의 갈래","설명문 읽기","요약하기","면담","매체 읽기"],
+      2:["음운의 체계","음운 변동","단어의 짜임","비유와 상징","소설의 시점","갈등과 구성","설명 방법","논증 방법","토론","고전 소설","매체 자료 읽기","보고서 쓰기"],
+      3:["문장 성분","문장의 짜임","논설문 쓰기","소설의 서술자","고전 시가","한글 창제 원리","토론과 협상","비평하며 읽기"]
+    },
+    eng: {
+      1:["be동사","일반동사","현재진행형","조동사","과거 시제","명령문","의문사","영어 듣기평가"],
+      2:["to부정사","동명사","비교급 최상급","수동태","현재완료","접속사","관계대명사","간접의문문","가주어 it","지각동사 사역동사","영어 듣기평가","영어 독해","서술형 영작"],
+      3:["관계대명사 what","관계부사","분사","분사구문","가정법 과거","과거완료","영어 서술형","영어 독해"]
+    },
+    soc: { all:["지도 읽기","인권과 헌법","헌법과 국가 기관","국회 정부 법원","경제생활과 선택","시장 경제와 가격","수요와 공급","국민 경제와 국제 거래","국제 사회와 국제 정치","인구 변화와 인구 문제","도시화","글로벌 경제 활동과 지역 변화","환경 문제와 지속 가능한 환경","세계 속의 우리나라","더불어 사는 세계"] },
+    hist: { all:["문명의 발생","고조선","삼국의 성립","삼국 통일","통일 신라와 발해","고려의 건국","고려 몽골 항쟁","조선의 건국","훈민정음 창제","임진왜란","조선 후기 사회 변화","흥선 대원군","개항","갑오개혁","일제 강점기","3·1 운동","대한민국 임시 정부","대한민국 정부 수립","6·25 전쟁","민주주의 발전"] },
+    eth: { all:["도덕적 추론","자아 정체성","행복한 삶","우정","가정 윤리","인권","정의","평화적 갈등 해결","사이버 윤리","환경 윤리","세계 시민 윤리","통일 윤리"] },
+    tech: { all:["청소년의 성장과 발달","청소년의 영양과 식사","식사 계획","의복 관리","주거 생활","소비 생활","기술의 발달","제조 기술","건설 기술","수송 기술","발명과 표준","적정 기술"] },
+    info: { all:["컴퓨팅 시스템","자료의 표현 이진수","알고리즘","순서도","엔트리","파이썬 기초","변수와 자료형","조건문","반복문","인공지능","정보 윤리","개인정보 보호"] },
+    hanja: { all:["한자의 구성 원리","부수","한자어의 짜임","사자성어","한문의 기본 문장 구조","명언과 명구"] },
+    music: { all:["음악의 요소","리듬과 박자","가락과 음계","화음","음악 기호","국악 장단","판소리","민요","서양 음악사","음악 수행평가"] },
+    art: { all:["조형 요소와 원리","색채","드로잉","소묘","수채화","판화","시각 디자인","한국 미술사","서양 미술사","미술 비평"] },
+    pe: { all:["건강 관리","체력 운동","육상","줄넘기","뜀틀","농구","배구","배드민턴","스포츠 경기 규칙","체육 이론"] }
   };
-  var SUBJ_NAME = {math:"수학", sci:"과학", etc:""};
+  var SUBJ = {}; SUBJECTS.forEach(function(x){ SUBJ[x.k] = x; });
+  function topicsFor(k, g){ var t = TOPICS[k]; return t[g] || t.all; }
+  function groupOf(k){ return (SUBJ[k] || {g: k === "etc" ? "etc" : "math"}).g; }
 
   // Storage (per device) — every access guarded
   function load(k, d){ try{ var v = localStorage.getItem(k); return v ? JSON.parse(v) : d; }catch(e){ return d; } }
@@ -344,7 +379,7 @@ footer{color:var(--muted);font-size:12.5px;text-align:center}
 
   var state = {
     where: load("seeun.where","mid"),
-    subj: load("seeun.subj","math"),
+    subj: (function(k){ return SUBJ[k] ? k : "math"; })(load("seeun.subj","math")),
     grade: load("seeun.grade","2"),
     my: load("seeun.my", []),
     recent: load("seeun.recent", [])
@@ -396,18 +431,16 @@ footer{color:var(--muted);font-size:12.5px;text-align:center}
     setPressed("subj","data-s",state.subj);
     setPressed("grades","data-g",state.grade);
     var box = $("topics");
-    var accent = {math:["--math","--math-soft"], sci:["--sci","--sci-soft"], etc:["--etc","--etc-soft"]}[state.subj];
-    box.style.setProperty("--accent","var("+accent[0]+")");
-    box.style.setProperty("--accent-soft","var("+accent[1]+")");
+    box.className = "topics g-" + groupOf(state.subj);
     box.textContent = "";
-    TOPICS[state.subj][state.grade].forEach(function(t){
+    topicsFor(state.subj, state.grade).forEach(function(t){
       var b = document.createElement("button");
       b.type = "button"; b.className = "topic";
       var s1 = document.createElement("span"); s1.textContent = t;
       var s2 = document.createElement("span"); s2.className = "go"; s2.textContent = "↗";
       b.appendChild(s1); b.appendChild(s2);
       b.addEventListener("click", function(){
-        var q = "중" + state.grade + " " + (SUBJ_NAME[state.subj] ? SUBJ_NAME[state.subj] + " " : "") + t;
+        var q = "중" + state.grade + " " + SUBJ[state.subj].n + " " + t;
         $("q").value = q;
         go(q);
       });
@@ -428,7 +461,7 @@ footer{color:var(--muted);font-size:12.5px;text-align:center}
     }
     state.my.forEach(function(item, i){
       var li = document.createElement("li");
-      var dot = document.createElement("span"); dot.className = "dot " + item.subj;
+      var dot = document.createElement("span"); dot.className = "dot g-" + groupOf(item.subj);
       var a = document.createElement("a");
       a.href = item.url; a.target = "_blank"; a.rel = "noopener"; a.textContent = item.name;
       var x = document.createElement("button");
@@ -615,6 +648,16 @@ footer{color:var(--muted);font-size:12.5px;text-align:center}
   })();
 
   setPressed("where","data-w",state.where);
+  SUBJECTS.forEach(function(x){
+    var b = document.createElement("button");
+    b.type = "button"; b.className = "g-" + x.g; b.textContent = x.n;
+    b.setAttribute("data-s", x.k); b.setAttribute("aria-pressed", "false");
+    $(x.row === "main" ? "subjMain" : "subjMore").appendChild(b);
+    var o = document.createElement("option"); o.value = x.k; o.textContent = x.n;
+    $("addSubj").appendChild(o);
+  });
+  $("addSubj").value = "math";
+
   renderTopics(); renderMy(); renderRecent(); renderScore(); showQ();
 })();
 </script>
