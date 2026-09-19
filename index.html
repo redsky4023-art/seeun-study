@@ -333,6 +333,7 @@ footer{color:var(--muted);font-size:12.5px;text-align:center}
     {k:"eth",  n:"도덕",   g:"soc",  row:"more"},
     {k:"tech", n:"기술·가정", g:"tech", row:"more"},
     {k:"info", n:"정보",   g:"tech", row:"more"},
+    {k:"ai",   n:"인공지능과 미래사회", q:"인공지능", g:"tech", row:"more"},
     {k:"hanja",n:"한문",   g:"etc",  row:"more"},
     {k:"music",n:"음악",   g:"etc",  row:"more"},
     {k:"art",  n:"미술",   g:"etc",  row:"more"},
@@ -364,6 +365,7 @@ footer{color:var(--muted);font-size:12.5px;text-align:center}
     eth: { all:["도덕적 추론","자아 정체성","행복한 삶","우정","가정 윤리","인권","정의","평화적 갈등 해결","사이버 윤리","환경 윤리","세계 시민 윤리","통일 윤리"] },
     tech: { all:["청소년의 성장과 발달","청소년의 영양과 식사","식사 계획","의복 관리","주거 생활","소비 생활","기술의 발달","제조 기술","건설 기술","수송 기술","발명과 표준","적정 기술"] },
     info: { all:["컴퓨팅 시스템","자료의 표현 이진수","알고리즘","순서도","엔트리","파이썬 기초","변수와 자료형","조건문","반복문","인공지능","정보 윤리","개인정보 보호"] },
+    ai: { all:["인공지능이란","인공지능의 역사","데이터와 인공지능","머신러닝 기계학습","지도학습 비지도학습","딥러닝 인공신경망","이미지 인식","자연어 처리","생성형 인공지능","챗GPT 활용","엔트리 인공지능 블록","인공지능 윤리","알고리즘 편향","인공지능과 직업의 미래"] },
     hanja: { all:["한자의 구성 원리","부수","한자어의 짜임","사자성어","한문의 기본 문장 구조","명언과 명구"] },
     music: { all:["음악의 요소","리듬과 박자","가락과 음계","화음","음악 기호","국악 장단","판소리","민요","서양 음악사","음악 수행평가"] },
     art: { all:["조형 요소와 원리","색채","드로잉","소묘","수채화","판화","시각 디자인","한국 미술사","서양 미술사","미술 비평"] },
@@ -440,7 +442,7 @@ footer{color:var(--muted);font-size:12.5px;text-align:center}
       var s2 = document.createElement("span"); s2.className = "go"; s2.textContent = "↗";
       b.appendChild(s1); b.appendChild(s2);
       b.addEventListener("click", function(){
-        var q = "중" + state.grade + " " + SUBJ[state.subj].n + " " + t;
+        var q = "중" + state.grade + " " + (SUBJ[state.subj].q || SUBJ[state.subj].n) + " " + t;
         $("q").value = q;
         go(q);
       });
