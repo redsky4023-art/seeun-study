@@ -65,11 +65,11 @@ header.top p{margin:6px 0 0;color:var(--muted)}
 :focus-visible{outline:3px solid var(--marker);outline-offset:2px}
 
 /* tabs */
-.tabs{position:sticky;top:0;z-index:5;display:grid;grid-template-columns:repeat(4,1fr);gap:4px;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:4px;box-shadow:var(--shadow)}
+.tabs{position:sticky;top:0;z-index:5;display:grid;grid-template-columns:repeat(5,1fr);gap:4px;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:4px;box-shadow:var(--shadow)}
 .tabs button{font:inherit;font-weight:700;font-size:14.5px;border:0;background:transparent;color:var(--muted);border-radius:10px;padding:9px 4px;cursor:pointer;position:relative;white-space:nowrap}
 .tabs button[aria-selected="true"]{background:var(--ink);color:var(--card)}
 .tabs .badge{display:inline-block;min-width:19px;margin-left:4px;padding:0 5px;border-radius:999px;background:var(--marker);color:var(--marker-ink);font-size:11.5px;line-height:19px;font-family:"IBM Plex Mono",monospace}
-@media (max-width:420px){.tabs button{font-size:13.5px}}
+@media (max-width:560px){.tabs button{font-size:13px;padding:9px 2px;letter-spacing:-.02em}.tabs .badge{position:absolute;top:-7px;right:-2px;margin:0;min-width:17px;line-height:17px;font-size:10.5px}}
 
 /* common */
 .panel{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:18px;display:grid;gap:14px}
@@ -78,7 +78,7 @@ header.top p{margin:6px 0 0;color:var(--muted)}
 .btn.sm{min-height:38px;font-size:14px;padding:0 14px;border-radius:10px}
 .btn.ghost{background:transparent;color:var(--ink);border:1px solid var(--line)}
 .btn.ghost:hover{border-color:var(--ink);filter:none}
-input[type=text],input[type=search],textarea,select{font:inherit;font-size:15px;padding:10px 12px;border-radius:10px;border:1px solid var(--line);background:var(--paper);color:var(--ink);width:100%;min-width:0}
+input[type=text],input[type=search],input[type=date],textarea,select{font:inherit;font-size:15px;padding:10px 12px;border-radius:10px;border:1px solid var(--line);background:var(--paper);color:var(--ink);width:100%;min-width:0}
 input:focus,textarea:focus,select:focus{outline:none;border-color:var(--math)}
 textarea{resize:vertical;min-height:84px;line-height:1.55}
 .hint{font-size:13px;color:var(--muted);margin:0}
@@ -157,8 +157,7 @@ textarea{resize:vertical;min-height:84px;line-height:1.55}
 label.inline{display:flex;gap:6px;align-items:center;font-size:14px;cursor:pointer}
 
 /* records */
-.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
-@media (max-width:560px){.stats{grid-template-columns:repeat(2,1fr)}}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:8px}
 .stats div{background:var(--paper);border-radius:12px;padding:10px 12px}
 .stats b{display:block;font-family:"IBM Plex Mono",monospace;font-size:24px;font-variant-numeric:tabular-nums;line-height:1.2}
 .stats span{font-size:12.5px;color:var(--muted)}
@@ -188,6 +187,48 @@ details.setup summary{cursor:pointer;font-weight:700;color:var(--math);font-size
 .tt .wdrow > b{font-family:"Jua",sans-serif;font-weight:400;font-size:17px;padding-top:3px}
 .toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:var(--card);padding:10px 18px;border-radius:999px;font-size:14px;font-weight:700;z-index:20;box-shadow:var(--shadow);max-width:calc(100% - 32px);text-align:center}
 footer{color:var(--muted);font-size:12.5px;text-align:center}
+input[type=date]{-webkit-appearance:none;appearance:none;min-height:44px;width:auto;min-width:160px}
+
+/* D-day */
+.dday{font:inherit;display:flex;gap:6px 12px;align-items:center;flex-wrap:wrap;width:100%;text-align:left;border:0;cursor:pointer;background:var(--marker);color:var(--marker-ink);border-radius:14px;padding:10px 16px;font-weight:700;font-size:16px}
+.dday.muted{background:var(--card);color:var(--muted);border:1.5px dashed var(--line);font-weight:500;font-size:14.5px}
+.dday .dn{font-family:"IBM Plex Mono",monospace;font-size:22px;letter-spacing:-.02em}
+.dday .sub{font-weight:500;font-size:13.5px}
+.dday .more{margin-left:auto;font-size:13px;font-weight:500;white-space:nowrap}
+.examlist{display:grid;gap:8px}
+.exam{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:6px 12px;align-items:center;border:1px solid var(--line);border-radius:12px;padding:10px 12px}
+.exam .dn{font-family:"IBM Plex Mono",monospace;font-size:17px;font-weight:700;min-width:72px;text-align:center;background:var(--marker);color:var(--marker-ink);border-radius:8px;padding:3px 6px;white-space:nowrap}
+.exam.past{opacity:.6}
+.exam.past .dn{background:var(--paper);color:var(--muted)}
+.exam .info{display:grid;gap:2px;min-width:0}
+.exam .info span{font-size:13px;color:var(--muted)}
+.exam .range{grid-column:1/-1;font-size:14px;white-space:pre-wrap;overflow-wrap:anywhere;background:var(--paper);border-radius:8px;padding:8px 10px;margin:0}
+.exam .acts{display:flex;gap:4px;align-items:center}
+
+/* 오답노트 */
+.pickbtn{display:inline-flex;align-items:center;gap:6px;font-weight:700;font-size:14px;border:1.5px dashed var(--line);border-radius:12px;padding:10px 14px;cursor:pointer;background:var(--paper);color:var(--ink)}
+.pickbtn:hover{border-color:var(--math)}
+.thumbs{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.thumb{position:relative;width:92px;height:92px;border-radius:10px;overflow:hidden;border:1px solid var(--line);background:var(--paper)}
+.thumb img{width:100%;height:100%;object-fit:cover;display:block}
+.thumb .x{position:absolute;top:3px;right:3px;background:rgba(0,0,0,.6);color:#fff;font-size:13px;padding:3px 6px}
+.wimg{display:grid;gap:8px}
+.wimg img{width:100%;max-height:440px;object-fit:contain;background:var(--paper);border-radius:12px;border:1px solid var(--line);cursor:zoom-in;display:block}
+.witem{background:var(--card);border:1px solid var(--line);border-left:5px solid var(--c);border-radius:16px;padding:14px 16px;display:grid;gap:10px}
+.witem .meta{display:flex;gap:8px;align-items:center;flex-wrap:wrap;font-size:12.5px;color:var(--muted)}
+.witem .meta .x{margin-left:auto}
+.witem .unit{font-size:16.5px;font-weight:700;overflow-wrap:anywhere}
+.rtags{display:flex;gap:4px;flex-wrap:wrap}
+.rtags span{font-size:12px;font-weight:700;border-radius:6px;padding:1px 8px;background:var(--kor-soft);color:var(--kor)}
+.tries{font-family:"IBM Plex Mono",monospace;font-size:15px;letter-spacing:.12em}
+.tries .o{color:var(--ok)} .tries .n{color:var(--danger)}
+.regrade{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.regrade button{font:inherit;font-weight:700;font-size:15px;border:2px solid var(--line);background:var(--card);border-radius:12px;padding:10px 6px;cursor:pointer}
+.regrade .yes{border-color:var(--ok);color:var(--ok)}
+.regrade .no{border-color:var(--danger);color:var(--danger)}
+.viewer{position:fixed;inset:0;z-index:30;background:rgba(10,12,20,.94);display:grid;place-items:center;padding:56px 12px 12px}
+.viewer img{max-width:100%;max-height:calc(100vh - 80px);object-fit:contain}
+.viewer button{position:absolute;top:calc(10px + env(safe-area-inset-top,0px));right:12px;font:inherit;font-weight:700;border:0;border-radius:999px;padding:8px 16px;background:#fff;color:#1B2340;cursor:pointer}
 @media (prefers-reduced-motion:no-preference){.btn,.chip,.grade button{transition:background-color .15s,border-color .15s,filter .15s}}
 </style>
 </head>
@@ -206,11 +247,13 @@ footer{color:var(--muted);font-size:12.5px;text-align:center}
     <button role="tab" data-tab="today" aria-selected="true">오늘</button>
     <button role="tab" data-tab="study" aria-selected="false">암기<span class="badge" id="bDue" hidden></span></button>
     <button role="tab" data-tab="qs" aria-selected="false">몰랐던 것<span class="badge" id="bQs" hidden></span></button>
+    <button role="tab" data-tab="wrong" aria-selected="false">오답노트<span class="badge" id="bWrong" hidden></span></button>
     <button role="tab" data-tab="rec" aria-selected="false">기록</button>
   </nav>
 
   <!-- 오늘 -->
   <section id="p-today" class="study" role="tabpanel">
+    <button type="button" class="dday" id="dday"></button>
     <div class="hero">
       <div class="day"><span id="hMon"></span><b id="hDate"></b><span id="hWd"></span></div>
       <div>
@@ -279,8 +322,64 @@ footer{color:var(--muted);font-size:12.5px;text-align:center}
     <div id="qList" class="study"></div>
   </section>
 
+  <!-- 오답노트 -->
+  <section id="p-wrong" class="study" role="tabpanel" hidden>
+    <div class="panel">
+      <h2>틀린 문제 넣기</h2>
+      <div class="chips" id="wSubj"></div>
+      <div class="field">
+        <span class="hint" style="font-weight:700">문제 사진</span>
+        <div class="thumbs" id="wPhotos"></div>
+      </div>
+      <label class="field"><span class="hint" style="font-weight:700">단원 · 문제 번호</span>
+        <input type="text" id="wUnit" list="wUnitList" placeholder="예: 연립방정식의 활용 · 쎈 152번"><datalist id="wUnitList"></datalist></label>
+      <div class="field">
+        <span class="hint" style="font-weight:700">왜 틀렸어?</span>
+        <div class="chips" id="wReasons"></div>
+      </div>
+      <label class="field"><span class="hint" style="font-weight:700">정답 · 바른 풀이</span>
+        <textarea id="wAnswer" placeholder="정답과, 어디서 틀렸는지·다음엔 어떻게 풀지 적어요"></textarea></label>
+      <div class="field">
+        <span class="hint" style="font-weight:700">풀이 사진 (있으면)</span>
+        <div class="thumbs" id="wSol"></div>
+      </div>
+      <button class="btn" type="button" id="wSave">오답노트에 넣기</button>
+    </div>
+    <div class="spread">
+      <div class="chips" id="wFilter">
+        <button class="chip all" data-f="open" aria-pressed="true">다시 풀 것</button>
+        <button class="chip all" data-f="done" aria-pressed="false">졸업한 문제</button>
+      </div>
+      <span class="hint">두 번 연속 맞히면 졸업!</span>
+    </div>
+    <div class="chips" id="wSubjFilter"></div>
+    <div id="wList" class="study"></div>
+  </section>
+
   <!-- 기록 -->
   <section id="p-rec" class="study" role="tabpanel" hidden>
+    <div class="panel" id="examPanel">
+      <div class="spread">
+        <h2>시험 날짜 · D-day</h2>
+      </div>
+      <div class="examlist" id="examList"></div>
+      <details class="setup" id="examForm">
+        <summary id="examFormTitle">시험 추가하기</summary>
+        <div class="tt">
+          <label class="field"><span class="hint" style="font-weight:700">시험 이름</span>
+            <input type="text" id="exName" placeholder="예: 2학기 기말고사, 영어 수행평가"></label>
+          <label class="field"><span class="hint" style="font-weight:700">날짜 (첫날)</span>
+            <input type="date" id="exDate"></label>
+          <div class="field"><span class="hint" style="font-weight:700">과목</span><div class="chips" id="exSubj"></div></div>
+          <label class="field"><span class="hint" style="font-weight:700">시험 범위 · 메모</span>
+            <textarea id="exRange" placeholder="예) 수학: 일차함수 ~ 삼각형의 성질&#10;과학: 물질의 구성, 전기와 자기"></textarea></label>
+          <div class="row">
+            <button class="btn sm" type="button" id="exSave">저장</button>
+            <button class="btn sm ghost" type="button" id="exCancel" hidden>취소</button>
+          </div>
+        </div>
+      </details>
+    </div>
     <div class="panel">
       <h2>세은이 복습 기록</h2>
       <div class="stats" id="stats"></div>
@@ -306,7 +405,7 @@ footer{color:var(--muted);font-size:12.5px;text-align:center}
     </div>
     <div class="panel">
       <h3>기록 지키기</h3>
-      <p class="hint">기록은 이 기기의 이 브라우저에만 저장돼요. 휴대폰을 바꾸거나 기록을 지우기 전에 「백업 파일 받기」를 눌러 두세요. 아이폰은 Safari의 공유 → 「홈 화면에 추가」로 앱처럼 쓰면 기록이 더 안전해요.</p>
+      <p class="hint">기록(사진 포함)은 이 기기 안에 저장돼요. 다른 기기에서는 안 보여요. 아이패드는 Safari 공유 → 「홈 화면에 추가」한 아이콘으로만 여세요 — Safari 창에서 연 것과는 기록이 따로 저장돼요. 기기를 바꾸기 전엔 「백업 파일 받기」를 눌러 두세요.</p>
       <div class="row">
         <button class="btn sm" type="button" id="exportBtn">백업 파일 받기</button>
         <button class="btn sm ghost" type="button" id="importBtn">백업 불러오기</button>
@@ -315,9 +414,11 @@ footer{color:var(--muted);font-size:12.5px;text-align:center}
     </div>
   </section>
 
-  <footer>세은이 복습방 · 기록은 이 기기에만 저장돼요</footer>
+  <footer>세은이 복습방 · 기록은 이 기기 안에 저장돼요</footer>
 </div>
 <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+<div class="viewer" id="viewer" hidden><img id="viewerImg" alt="사진 크게 보기"><button type="button" id="viewerClose">닫기 ✕</button></div>
+<input type="file" id="wFile" accept="image/*" multiple hidden>
 
 <script>
 (function(){
@@ -361,7 +462,7 @@ footer{color:var(--muted);font-size:12.5px;text-align:center}
   function nice(s){ var d = parse(s); return (d.getMonth() + 1) + "월 " + d.getDate() + "일 (" + WD[d.getDay()] + ")"; }
 
   // ---- 저장 (이 기기에만) ----
-  function blank(){ return {notes:{}, cards:[], qs:[], log:{}, tt:{}, extra:{}, off:{}}; }
+  function blank(){ return {notes:{}, cards:[], qs:[], log:{}, tt:{}, extra:{}, off:{}, wrong:[], exams:[]}; }
   function load(){
     try{
       var v = JSON.parse(localStorage.getItem(KEY) || "null");
@@ -469,11 +570,14 @@ footer{color:var(--muted);font-size:12.5px;text-align:center}
     var filled = subs.filter(function(k){ return noteFilled(noteOf(d, k)); }).length;
     var due = dueCards().length;
     var openQ = D.qs.filter(function(q){ return !q.done; }).length;
+    renderDday();
+    var openW = D.wrong.filter(function(w){ return !w.done; }).length;
     var steps = [
       {t: subs.length ? "수업 정리 " + filled + " / " + subs.length + "과목" : "오늘 들은 과목 고르기", done: subs.length > 0 && filled === subs.length},
-      {t: due ? "외울 카드 " + due + "장 남음" : "오늘 외울 카드 끝", done: due === 0 && D.cards.length > 0, go: due ? "study" : null},
+      {t: due ? "외울 카드 " + due + "장 남음" : (D.cards.length ? "오늘 외울 카드 끝" : "외울 카드 아직 없음"), done: due === 0 && D.cards.length > 0, go: due ? "study" : null},
       {t: openQ ? "몰랐던 것 " + openQ + "개 찾아보기" : "몰랐던 것 없음", done: openQ === 0, go: openQ ? "qs" : null}
     ];
+    if(D.wrong.length) steps.push({t: openW ? "다시 풀 오답 " + openW + "개" : "오답 모두 졸업", done: !openW, go: openW ? "wrong" : null});
     var ol = $("steps"); ol.textContent = "";
     steps.forEach(function(s, i){
       ol.appendChild(el("li", {class: s.done ? "done" : ""}, [
@@ -596,7 +700,8 @@ footer{color:var(--muted);font-size:12.5px;text-align:center}
         el("div", {class:"ttl", text:"❓ 몰랐던 것"}),
         el("div", {class:"row"}, [qi, el("button", {class:"btn sm", type:"button", text:"적기", onclick:addQ})]),
         qItems
-      ])
+      ]),
+      el("button", {class:"linkbtn", type:"button", style:"justify-self:start", text:"📷 틀린 문제 오답노트에 넣기 →", onclick:function(){ W.subj = k; uiSet("wsubj", k); showTab("wrong"); }})
     ]);
     refreshState();
     return card;
@@ -616,9 +721,15 @@ footer{color:var(--muted);font-size:12.5px;text-align:center}
     if(cs.length){ lines.push("", "🃏 외울 카드 " + cs.length + "장"); cs.forEach(function(c){ lines.push("· " + c.front + " → " + c.back); }); }
     var qs = D.qs.filter(function(q){ return q.date === d; });
     if(qs.length){ lines.push("", "❓ 몰랐던 것"); qs.forEach(function(q){ lines.push("· " + q.text + (q.done ? " (해결: " + q.answer.trim() + ")" : "")); }); }
+    var ws = D.wrong.filter(function(w){ return w.date === d; });
+    if(ws.length){ lines.push("", "📷 오답노트 " + ws.length + "문제"); ws.forEach(function(w){ lines.push("· " + sname(w.subj) + (w.unit ? " " + w.unit : "") + (w.reasons.length ? " (" + w.reasons.join(", ") + ")" : "")); }); }
+    var wre = 0; D.wrong.forEach(function(w){ w.tries.forEach(function(t){ if(t.d === d) wre++; }); });
+    if(wre) lines.push("오답 다시 풀기 " + wre + "번");
     var rev = (D.log[d] || {}).rev || 0;
     if(rev) lines.push("", "오늘 카드 " + rev + "번 외움");
-    if(!any && !cs.length && !qs.length){ toast("아직 정리한 게 없어요"); return; }
+    var up = upcoming()[0];
+    if(up) lines.push("", "📅 " + up.name + " " + dn(up.date));
+    if(!any && !cs.length && !qs.length && !ws.length){ toast("아직 정리한 게 없어요"); return; }
     var text = lines.join("\n");
     if(navigator.share){ navigator.share({text:text}).catch(function(){}); return; }
     try{ navigator.clipboard.writeText(text).then(function(){ toast("복사했어요. 카톡에 붙여넣기 하세요"); }, function(){ prompt("복사해서 보내세요", text); }); }
@@ -789,6 +900,7 @@ footer{color:var(--muted);font-size:12.5px;text-align:center}
     Object.keys(D.log).forEach(function(d){ if((D.log[d] || {}).rev) set[d] = 1; });
     D.cards.forEach(function(c){ set[c.created] = 1; });
     D.qs.forEach(function(q){ set[q.date] = 1; });
+    D.wrong.forEach(function(w){ set[w.date] = 1; w.tries.forEach(function(t){ set[t.d] = 1; }); });
     return set;
   }
   function streak(){
@@ -801,7 +913,7 @@ footer{color:var(--muted);font-size:12.5px;text-align:center}
     var set = activeDays();
     var learned = D.cards.filter(function(c){ return c.box >= MAXBOX; }).length;
     var solved = D.qs.filter(function(q){ return q.done; }).length;
-    var data = [[streak() + "일", "연속 복습"], [Object.keys(set).length + "일", "복습한 날 전체"], [D.cards.length + "장", "외울 카드 (외움 " + learned + ")"], [solved + "개", "해결한 질문"]];
+    var data = [[streak() + "일", "연속 복습"], [Object.keys(set).length + "일", "복습한 날 전체"], [D.cards.length + "장", "외울 카드 (외움 " + learned + ")"], [solved + "개", "해결한 질문"], [D.wrong.filter(function(w){ return w.done; }).length + " / " + D.wrong.length, "오답 졸업"]];
     var box = $("stats"); box.textContent = "";
     data.forEach(function(x){ box.appendChild(el("div", null, [el("b", {text:x[0]}), el("span", {text:x[1]})])); });
     // 달력: 최근 5주, 일요일 시작
@@ -825,7 +937,9 @@ footer{color:var(--muted);font-size:12.5px;text-align:center}
       var qs = D.qs.filter(function(x){ return x.date === d; });
       var hay = [];
       Object.keys(notes).forEach(function(k){ hay.push(sname(k), notes[k].unit, notes[k].body); });
+      var ws = D.wrong.filter(function(w){ return w.date === d; });
       cs.forEach(function(c){ hay.push(c.front, c.back); }); qs.forEach(function(x){ hay.push(x.text, x.answer); });
+      ws.forEach(function(w){ hay.push(sname(w.subj), w.unit, w.answer); });
       if(q && hay.join(" ").toLowerCase().indexOf(q) < 0) return;
       if(shown >= 60) return; shown++;
       var sum = el("summary", null, [el("span", {text:nice(d)})].concat(Object.keys(notes).map(function(k){ return el("span", {class:"tag " + gcls(k), text:sname(k)}); })));
@@ -836,6 +950,7 @@ footer{color:var(--muted);font-size:12.5px;text-align:center}
       });
       if(cs.length) body.appendChild(el("div", {class:"note"}, [el("b", {text:"🃏 카드 " + cs.length + "장"}), el("p", {text:cs.map(function(c){ return c.front + " → " + c.back; }).join("\n")})]));
       if(qs.length) body.appendChild(el("div", {class:"note"}, [el("b", {text:"❓ 몰랐던 것"}), el("p", {text:qs.map(function(x){ return (x.done ? "✓ " : "? ") + x.text + (x.done && x.answer ? "\n   → " + x.answer.trim() : ""); }).join("\n")})]));
+      if(ws.length) body.appendChild(el("div", {class:"note"}, [el("b", {text:"📷 오답 " + ws.length + "문제"}), el("p", {text:ws.map(function(w){ return (w.done ? "✓ " : "· ") + sname(w.subj) + (w.unit ? " " + w.unit : ""); }).join("\n")})]));
       var rev = (D.log[d] || {}).rev; if(rev) body.appendChild(el("p", {class:"hint", text:"이날 카드 " + rev + "번 외움"}));
       box.appendChild(el("details", {class:"dayrec", open: shown === 1 && !q ? true : null}, [sum, body]));
     });
@@ -873,7 +988,18 @@ footer{color:var(--muted);font-size:12.5px;text-align:center}
 
   function exportData(){
     save();
-    var blob = new Blob([JSON.stringify(D, null, 1)], {type:"application/json"});
+    var ids = allPhotoIds();
+    toast(ids.length ? "사진 " + ids.length + "장 담는 중…" : "백업 만드는 중…");
+    Promise.all(ids.map(function(id){
+      return photoGet(id).then(blobToDataURL).then(function(u){ return [id, u]; }, function(){ return null; });
+    })).then(function(pairs){
+      var out = JSON.parse(JSON.stringify(D)); out.photos = {};
+      pairs.forEach(function(x){ if(x && x[1]) out.photos[x[0]] = x[1]; });
+      download(out);
+    });
+  }
+  function download(out){
+    var blob = new Blob([JSON.stringify(out)], {type:"application/json"});
     var a = el("a", {href:URL.createObjectURL(blob), download:"세은복습방-백업-" + today() + ".json"});
     document.body.appendChild(a); a.click(); setTimeout(function(){ URL.revokeObjectURL(a.href); a.remove(); }, 1000);
     toast("백업 파일을 받았어요");
@@ -891,6 +1017,13 @@ footer{color:var(--muted);font-size:12.5px;text-align:center}
         (v.qs || []).forEach(function(q){ if(!qids[q.id]) D.qs.push(q); });
         Object.keys(v.notes).forEach(function(d){ D.notes[d] = D.notes[d] || {}; Object.keys(v.notes[d]).forEach(function(k){ if(!D.notes[d][k]) D.notes[d][k] = v.notes[d][k]; }); });
         Object.keys(v.log || {}).forEach(function(d){ if(!D.log[d]) D.log[d] = v.log[d]; });
+        var wids = {}; D.wrong.forEach(function(w){ wids[w.id] = 1; });
+        (v.wrong || []).forEach(function(w){ if(!wids[w.id]) D.wrong.push(w); });
+        var eids = {}; D.exams.forEach(function(e){ eids[e.id] = 1; });
+        (v.exams || []).forEach(function(e){ if(!eids[e.id]) D.exams.push(e); });
+        Object.keys(v.photos || {}).forEach(function(id){
+          fetch(v.photos[id]).then(function(r){ return r.blob(); }).then(function(b){ return photoPut(id, b); }).then(function(){ if(!$("p-wrong").hidden) renderWrongList(); }, function(){});
+        });
         ["tt","extra","off"].forEach(function(f){ Object.keys(v[f] || {}).forEach(function(k){ if(!D[f][k]) D[f][k] = v[f][k]; }); });
         save(); S.queue = null; renderAll(); toast("백업을 합쳤어요");
       }catch(e){ toast("백업 파일이 아니에요"); }
@@ -898,8 +1031,253 @@ footer{color:var(--muted);font-size:12.5px;text-align:center}
     r.readAsText(file);
   }
 
+  // =========================== 사진 저장 (IndexedDB) ===========================
+  var idbP = null;
+  function idb(){
+    if(idbP) return idbP;
+    idbP = new Promise(function(res, rej){
+      try{
+        var r = indexedDB.open("seeun-rv", 1);
+        r.onupgradeneeded = function(){ r.result.createObjectStore("photos"); };
+        r.onsuccess = function(){ res(r.result); };
+        r.onerror = function(){ rej(r.error); };
+      }catch(e){ rej(e); }
+    });
+    idbP.catch(function(){ idbP = null; });
+    return idbP;
+  }
+  function tx(mode, fn){
+    return idb().then(function(db){ return new Promise(function(res, rej){
+      var t = db.transaction("photos", mode), st = t.objectStore("photos"), out;
+      var r = fn(st); if(r) r.onsuccess = function(){ out = r.result; };
+      t.oncomplete = function(){ res(out); }; t.onerror = t.onabort = function(){ rej(t.error); };
+    }); });
+  }
+  function photoPut(id, blob){ return tx("readwrite", function(st){ return st.put(blob, id); }); }
+  function photoGet(id){ return tx("readonly", function(st){ return st.get(id); }).then(function(b){ if(!b) throw 0; return b; }); }
+  function photoDel(id){ if(URLS[id]){ URL.revokeObjectURL(URLS[id]); delete URLS[id]; } return tx("readwrite", function(st){ return st.delete(id); }).catch(function(){}); }
+  var URLS = {};
+  function photoURL(id){ if(URLS[id]) return Promise.resolve(URLS[id]); return photoGet(id).then(function(b){ return URLS[id] = URL.createObjectURL(b); }); }
+  function blobToDataURL(b){ return new Promise(function(res, rej){ var r = new FileReader(); r.onload = function(){ res(r.result); }; r.onerror = rej; r.readAsDataURL(b); }); }
+  function allPhotoIds(){ var a = []; D.wrong.forEach(function(w){ a = a.concat(w.photos || [], w.sol || []); }); return a; }
+  // 사진은 긴 변 1600px JPEG 로 줄여서 저장 (글씨는 읽히고 용량은 1/10)
+  function shrink(file){
+    return new Promise(function(res, rej){
+      var u = URL.createObjectURL(file), im = new Image();
+      im.onload = function(){
+        var M = 1600, w = im.naturalWidth, h = im.naturalHeight, k = Math.min(1, M / Math.max(w, h));
+        var c = document.createElement("canvas"); c.width = Math.round(w * k); c.height = Math.round(h * k);
+        var g = c.getContext("2d"); g.fillStyle = "#fff"; g.fillRect(0, 0, c.width, c.height); g.drawImage(im, 0, 0, c.width, c.height);
+        URL.revokeObjectURL(u);
+        c.toBlob(function(b){ b ? res(b) : rej(); }, "image/jpeg", 0.82);
+      };
+      im.onerror = function(){ URL.revokeObjectURL(u); rej(); };
+      im.src = u;
+    });
+  }
+  function openViewer(src){ $("viewerImg").src = src; $("viewer").hidden = false; }
+  $("viewerClose").addEventListener("click", function(){ $("viewer").hidden = true; });
+  $("viewer").addEventListener("click", function(e){ if(e.target === this) this.hidden = true; });
+  document.addEventListener("keydown", function(e){ if(e.key === "Escape") $("viewer").hidden = true; });
+  function photoImg(id){
+    var i = el("img", {alt:"오답 사진 (누르면 크게)", loading:"lazy"});
+    photoURL(id).then(function(u){ i.src = u; }, function(){ i.alt = "사진을 찾을 수 없어요"; });
+    i.addEventListener("click", function(){ if(i.src) openViewer(i.src); });
+    return i;
+  }
+
+  // =========================== 오답노트 ===========================
+  var REASONS = ["개념을 몰라서","계산 실수","문제를 잘못 읽음","공식이 헷갈림","시간이 부족","찍었음"];
+  var W = {subj: uiGet("wsubj", "math"), filter: "open", fsubj: "all", pickFor: "photos", draft: {photos: [], sol: [], reasons: []}, open: {}};
+  if(!SUBJ[W.subj]) W.subj = "math";
+  function renderWSubj(){
+    var box = $("wSubj"); box.textContent = "";
+    SUBJECTS.forEach(function(s){
+      box.appendChild(el("button", {type:"button", class:"chip " + gcls(s.k), "aria-pressed": String(W.subj === s.k), text:s.n, onclick:function(){ W.subj = s.k; uiSet("wsubj", s.k); renderWSubj(); }}));
+    });
+    var dl = $("wUnitList"); dl.textContent = "";
+    (UNITS[W.subj] || []).forEach(function(u){ dl.appendChild(el("option", {value:u})); });
+  }
+  function renderWReasons(){
+    var box = $("wReasons"); box.textContent = "";
+    REASONS.forEach(function(r){
+      var on = W.draft.reasons.indexOf(r) >= 0;
+      box.appendChild(el("button", {type:"button", class:"chip g-kor", "aria-pressed": String(on), text:r, onclick:function(){
+        var a = W.draft.reasons, i = a.indexOf(r); if(i >= 0) a.splice(i, 1); else a.push(r); renderWReasons();
+      }}));
+    });
+  }
+  function renderDraftThumbs(which){
+    var box = $(which === "photos" ? "wPhotos" : "wSol"); box.textContent = "";
+    W.draft[which].forEach(function(p, i){
+      var im = el("img", {src:p.url, alt:"고른 사진"});
+      im.addEventListener("click", function(){ openViewer(p.url); });
+      box.appendChild(el("div", {class:"thumb"}, [im, el("button", {class:"x", type:"button", "aria-label":"사진 빼기", text:"✕", onclick:function(){
+        URL.revokeObjectURL(p.url); W.draft[which].splice(i, 1); renderDraftThumbs(which);
+      }})]));
+    });
+    box.appendChild(el("button", {type:"button", class:"pickbtn", text: which === "photos" ? "📷 사진 찍기 · 고르기" : "📷 풀이 사진", onclick:function(){ W.pickFor = which; $("wFile").click(); }}));
+  }
+  $("wFile").addEventListener("change", function(){
+    var files = Array.prototype.slice.call(this.files || []), which = W.pickFor; this.value = "";
+    if(!files.length) return;
+    toast("사진 줄이는 중…");
+    Promise.all(files.map(function(f){ return shrink(f).then(function(b){ return {blob:b, url:URL.createObjectURL(b)}; }, function(){ return null; }); }))
+      .then(function(list){
+        var ok = list.filter(Boolean); W.draft[which] = W.draft[which].concat(ok); renderDraftThumbs(which);
+        toast(ok.length < list.length ? "못 읽은 사진이 있어요" : "사진 " + ok.length + "장 넣었어요");
+      });
+  });
+  function saveWrong(){
+    var unit = $("wUnit").value.trim(), ans = $("wAnswer").value.trim();
+    if(!W.draft.photos.length && !unit){ toast("문제 사진을 넣거나 단원을 적어 주세요"); return; }
+    var btn = $("wSave"); btn.disabled = true;
+    var e = {id:uid(), subj:W.subj, date:today(), unit:unit, reasons:W.draft.reasons.slice(), answer:ans, photos:[], sol:[], tries:[], done:false};
+    var jobs = [];
+    ["photos","sol"].forEach(function(f){ W.draft[f].forEach(function(p){ var id = "ph" + uid(); e[f].push(id); URLS[id] = p.url; jobs.push(photoPut(id, p.blob)); }); });
+    Promise.all(jobs).then(function(){
+      D.wrong.push(e); markDay(today()); save();
+      W.draft = {photos: [], sol: [], reasons: []}; $("wUnit").value = ""; $("wAnswer").value = "";
+      W.filter = "open"; renderWrongAll(); renderBadges(); toast("오답노트에 넣었어요");
+    }, function(){ toast("사진을 저장하지 못했어요. 저장 공간을 확인해 주세요"); }).then(function(){ btn.disabled = false; });
+  }
+  function regrade(w, ok){
+    w.tries.push({d: today(), ok: ok});
+    var n = w.tries.length;
+    if(ok && n >= 2 && w.tries[n - 2].ok){ w.done = true; w.doneDate = today(); toast("두 번 연속 맞혔어! 졸업 🎓"); }
+    else toast(ok ? "맞았어! 한 번 더 맞히면 졸업" : "괜찮아, 풀이 다시 보고 또 풀자");
+    markDay(today()); save(); renderWrongList(); renderBadges();
+  }
+  function wItem(w){
+    var kids = [el("div", {class:"meta"}, [el("span", {class:"tag " + gcls(w.subj), text:sname(w.subj)}), el("span", {text:nice(w.date)}),
+      el("button", {class:"x", type:"button", "aria-label":"오답 지우기", text:"×", onclick:function(){
+        if(!confirm("이 오답을 지울까요? 사진도 같이 지워져요.")) return;
+        (w.photos || []).concat(w.sol || []).forEach(photoDel);
+        D.wrong = D.wrong.filter(function(x){ return x.id !== w.id; }); save(); renderWrongList(); renderBadges();
+      }})])];
+    if(w.unit) kids.push(el("div", {class:"unit", text:w.unit}));
+    if(w.reasons.length) kids.push(el("div", {class:"rtags"}, w.reasons.map(function(r){ return el("span", {text:r}); })));
+    if(w.photos.length) kids.push(el("div", {class:"wimg"}, w.photos.map(photoImg)));
+    var openA = !!W.open[w.id];
+    if(w.answer || w.sol.length){
+      kids.push(el("button", {class:"linkbtn", type:"button", style:"justify-self:start", text: openA ? "풀이 숨기기 ▲" : "먼저 풀어 보고 → 풀이 보기 ▼", onclick:function(){ W.open[w.id] = !openA; renderWrongList(); }}));
+      if(openA){
+        if(w.answer) kids.push(el("div", {class:"ans", text:w.answer}));
+        if(w.sol.length) kids.push(el("div", {class:"wimg"}, w.sol.map(photoImg)));
+      }
+    }
+    if(w.tries.length) kids.push(el("div", {class:"spread"}, [el("span", {class:"hint", text:"다시 풀기 기록"}),
+      el("span", {class:"tries"}, w.tries.map(function(t){ return el("span", {class: t.ok ? "o" : "n", title:nice(t.d), text: t.ok ? "○" : "✕"}); }))]));
+    if(!w.done){
+      kids.push(el("div", {class:"hint", text:"다시 풀어 봤어?"}));
+      kids.push(el("div", {class:"regrade"}, [
+        el("button", {type:"button", class:"no", text:"또 틀렸어", onclick:function(){ regrade(w, false); }}),
+        el("button", {type:"button", class:"yes", text:"맞았어", onclick:function(){ regrade(w, true); }})
+      ]));
+    } else {
+      kids.push(el("div", {class:"spread"}, [el("span", {class:"hint", text:"🎓 " + nice(w.doneDate || w.date) + " 졸업"}),
+        el("button", {class:"linkbtn", type:"button", text:"다시 풀 것으로", onclick:function(){ w.done = false; save(); renderWrongList(); renderBadges(); }})]));
+    }
+    return el("article", {class:"witem " + gcls(w.subj)}, kids);
+  }
+  function renderWrongList(){
+    Array.prototype.forEach.call($("wFilter").children, function(b){ b.setAttribute("aria-pressed", String(b.dataset.f === W.filter)); });
+    var base = D.wrong.filter(function(w){ return W.filter === "open" ? !w.done : w.done; });
+    var cnt = {}; base.forEach(function(w){ cnt[w.subj] = (cnt[w.subj] || 0) + 1; });
+    if(W.fsubj !== "all" && !cnt[W.fsubj]) W.fsubj = "all";
+    var fb = $("wSubjFilter"); fb.textContent = "";
+    if(Object.keys(cnt).length > 1){
+      fb.appendChild(el("button", {type:"button", class:"chip all", "aria-pressed": String(W.fsubj === "all"), text:"전체 " + base.length, onclick:function(){ W.fsubj = "all"; renderWrongList(); }}));
+      SUBJECTS.forEach(function(s){ if(cnt[s.k]) fb.appendChild(el("button", {type:"button", class:"chip " + gcls(s.k), "aria-pressed": String(W.fsubj === s.k), text:s.n + " " + cnt[s.k], onclick:function(){ W.fsubj = s.k; renderWrongList(); }})); });
+    }
+    var list = base.filter(function(w){ return W.fsubj === "all" || w.subj === W.fsubj; });
+    // 다시 풀 것: 오래 안 본 문제부터
+    function last(w){ return w.tries.length ? w.tries[w.tries.length - 1].d : w.date; }
+    list.sort(function(a, b){ return W.filter === "open" ? (last(a) < last(b) ? -1 : last(a) > last(b) ? 1 : 0) : ((a.doneDate || "") > (b.doneDate || "") ? -1 : 1); });
+    var box = $("wList"); box.textContent = "";
+    if(!list.length){ box.appendChild(el("p", {class:"empty", text: W.filter === "open" ? "다시 풀 오답이 없어요. 틀린 문제는 위에서 사진으로 넣어요." : "아직 졸업한 문제가 없어요."})); return; }
+    list.forEach(function(w){ box.appendChild(wItem(w)); });
+  }
+  function renderWrongAll(){ renderWSubj(); renderWReasons(); renderDraftThumbs("photos"); renderDraftThumbs("sol"); renderWrongList(); }
+  $("wSave").addEventListener("click", saveWrong);
+  Array.prototype.forEach.call($("wFilter").children, function(b){ b.addEventListener("click", function(){ W.filter = b.dataset.f; renderWrongList(); }); });
+
+  // =========================== 시험 D-day ===========================
+  function dn(date){ var n = Math.round((parse(date) - parse(today())) / 86400000); return n === 0 ? "D-DAY" : n > 0 ? "D-" + n : "D+" + (-n); }
+  function upcoming(){ var t = today(); return D.exams.filter(function(e){ return e.date >= t; }).sort(function(a, b){ return a.date < b.date ? -1 : 1; }); }
+  function renderDday(){
+    var b = $("dday"); b.textContent = "";
+    var up = upcoming();
+    if(!up.length){ b.className = "dday muted"; b.textContent = "📅 시험 날짜를 넣으면 여기에 D-day가 떠요"; return; }
+    var e = up[0]; b.className = "dday";
+    var sub = [];
+    if(e.subjs.length){
+      sub.push(e.subjs.map(sname).join("·"));
+      var ow = D.wrong.filter(function(w){ return !w.done && e.subjs.indexOf(w.subj) >= 0; }).length;
+      if(ow) sub.push("다시 풀 오답 " + ow + "개");
+    }
+    if(up.length > 1) sub.push("다음: " + up[1].name + " " + dn(up[1].date));
+    b.appendChild(el("span", {class:"dn", text:dn(e.date)}));
+    b.appendChild(el("span", {text:e.name}));
+    if(sub.length) b.appendChild(el("span", {class:"sub", text:sub.join(" · ")}));
+    b.appendChild(el("span", {class:"more", text: e.range ? "범위 보기 ›" : "시험 일정 ›"}));
+  }
+  var E = {editing: null, subjs: []};
+  function renderExSubj(){
+    var box = $("exSubj"); box.textContent = "";
+    SUBJECTS.forEach(function(s){
+      box.appendChild(el("button", {type:"button", class:"chip " + gcls(s.k), "aria-pressed": String(E.subjs.indexOf(s.k) >= 0), text:s.n, onclick:function(){
+        var i = E.subjs.indexOf(s.k); if(i >= 0) E.subjs.splice(i, 1); else E.subjs.push(s.k); renderExSubj();
+      }}));
+    });
+  }
+  function resetExamForm(){
+    E.editing = null; E.subjs = []; $("exName").value = ""; $("exDate").value = ""; $("exRange").value = "";
+    $("examFormTitle").textContent = "시험 추가하기"; $("exCancel").hidden = true; renderExSubj();
+  }
+  function renderExams(){
+    var box = $("examList"); box.textContent = "";
+    var t = today();
+    var up = upcoming(), past = D.exams.filter(function(e){ return e.date < t; }).sort(function(a, b){ return a.date > b.date ? -1 : 1; }).slice(0, 3);
+    if(!up.length && !past.length){ box.appendChild(el("p", {class:"empty", text:"아직 시험 일정이 없어요. 아래 「시험 추가하기」를 눌러요."})); }
+    up.concat(past).forEach(function(e){
+      box.appendChild(el("div", {class:"exam" + (e.date < t ? " past" : "")}, [
+        el("span", {class:"dn", text:dn(e.date)}),
+        el("div", {class:"info"}, [el("b", {text:e.name}), el("span", {text: nice(e.date) + (e.subjs.length ? " · " + e.subjs.map(sname).join("·") : "")})]),
+        el("div", {class:"acts"}, [
+          el("button", {class:"linkbtn", type:"button", text:"고치기", onclick:function(){
+            E.editing = e.id; E.subjs = e.subjs.slice(); $("exName").value = e.name; $("exDate").value = e.date; $("exRange").value = e.range || "";
+            $("examFormTitle").textContent = "「" + e.name + "」 고치기"; $("exCancel").hidden = false; renderExSubj();
+            $("examForm").open = true; $("exName").focus();
+          }}),
+          el("button", {class:"x", type:"button", "aria-label":"시험 지우기", text:"×", onclick:function(){
+            if(!confirm(e.name + " 일정을 지울까요?")) return;
+            D.exams = D.exams.filter(function(x){ return x.id !== e.id; }); save(); renderExams(); renderDday();
+          }})
+        ]),
+        e.range ? el("p", {class:"range", text:e.range}) : null
+      ]));
+    });
+  }
+  $("exSave").addEventListener("click", function(){
+    var name = $("exName").value.trim(), date = $("exDate").value;
+    if(!name){ $("exName").focus(); toast("시험 이름을 적어 주세요"); return; }
+    if(!/^\d{4}-\d{2}-\d{2}$/.test(date)){ $("exDate").focus(); toast("날짜를 골라 주세요"); return; }
+    var rec = {name:name, date:date, subjs:E.subjs.slice(), range:$("exRange").value.trim()};
+    if(E.editing){ D.exams.forEach(function(x){ if(x.id === E.editing){ x.name = rec.name; x.date = rec.date; x.subjs = rec.subjs; x.range = rec.range; } }); }
+    else { rec.id = uid(); D.exams.push(rec); }
+    save(); resetExamForm(); $("examForm").open = false; renderExams(); renderDday(); toast("시험 일정을 저장했어요");
+  });
+  $("exCancel").addEventListener("click", function(){ resetExamForm(); $("examForm").open = false; });
+  $("dday").addEventListener("click", function(){
+    showTab("rec");
+    if(!upcoming().length) $("examForm").open = true;
+    setTimeout(function(){ $("examPanel").scrollIntoView({behavior:"smooth", block:"start"}); }, 50);
+  });
+  resetExamForm();
+
   // =========================== 탭 ===========================
-  var TABS = ["today","study","qs","rec"];
+  var TABS = ["today","study","qs","wrong","rec"];
   function showTab(t){
     if(TABS.indexOf(t) < 0) t = "today";
     TABS.forEach(function(x){ $("p-" + x).hidden = x !== t; });
@@ -908,13 +1286,16 @@ footer{color:var(--muted);font-size:12.5px;text-align:center}
     if(t === "today") renderToday();
     if(t === "study"){ if(!S.queue || S.idx >= S.queue.length){ S.queue = null; } renderStudy(); }
     if(t === "qs"){ renderQSubj(); renderQs(); }
-    if(t === "rec") renderRec();
+    if(t === "wrong") renderWrongAll();
+    if(t === "rec"){ renderRec(); renderExams(); }
     window.scrollTo({top:0});
   }
   function renderBadges(){
     var due = dueCards().length, oq = D.qs.filter(function(q){ return !q.done; }).length;
     $("bDue").hidden = !due; $("bDue").textContent = due;
     $("bQs").hidden = !oq; $("bQs").textContent = oq;
+    var ow = D.wrong.filter(function(w){ return !w.done; }).length;
+    $("bWrong").hidden = !ow; $("bWrong").textContent = ow;
   }
   function renderAll(){ renderBadges(); showTab(uiGet("tab", "today")); renderTT(); }
 
