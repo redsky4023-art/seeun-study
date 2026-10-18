@@ -169,6 +169,9 @@ input[type=date]{-webkit-appearance:none;appearance:none;min-height:44px;width:a
 .lpick button b{font-weight:700;font-size:15px}
 .lpick button span{font-size:12.5px;color:var(--muted)}
 .lframe{display:block;width:100%;border:0;min-height:70vh;background:transparent}
+.chip.none{opacity:.55}
+.chip .cnt{display:inline-block;margin-left:5px;font-size:11px;line-height:17px;min-width:17px;padding:0 5px;border-radius:999px;background:var(--marker);color:var(--marker-ink);font-family:"IBM Plex Mono",monospace}
+#lSubj .chip{font-size:15px;padding:7px 13px}
 .past-note{display:flex;gap:8px;align-items:center;flex-wrap:wrap;background:var(--card);border:1.5px dashed var(--line);border-radius:12px;padding:8px 12px;font-size:14px;color:var(--muted)}
 /* 지난 공부 */
 .llist{list-style:none;margin:0;padding:0;display:grid;gap:8px}
@@ -205,12 +208,12 @@ input[type=date]{-webkit-appearance:none;appearance:none;min-height:44px;width:a
   <!-- 오늘 공부 -->
   <section id="p-study" class="study" role="tabpanel">
     <div class="lhead">
+      <div class="chips" id="lSubj" aria-label="과목 고르기"></div>
       <span class="when" id="lWhen"></span>
       <div class="lpick" id="lPick"></div>
-      <div class="past-note" id="lPast" hidden></div>
     </div>
     <iframe class="lframe" id="lFrame" title="단원 공부" scrolling="no"></iframe>
-    <p class="empty" id="lEmpty" hidden>아직 올라온 단원이 없어요. 엄마가 교과서 사진을 보내 주면 여기에 그날 배운 내용이 올라와요.</p>
+    <p class="empty" id="lEmpty" hidden></p>
   </section>
 
   <!-- 오답노트 -->
@@ -368,33 +371,52 @@ input[type=date]{-webkit-appearance:none;appearance:none;min-height:44px;width:a
   function markDay(d){ D.log[d] = D.log[d] || {rev:0}; }
 
   // =========================== 오늘 공부 ===========================
-  var L = {cur: null, past: false};
+  // 과목 버튼 → 그 과목의 가장 최근 단원을 펼친다. 단원이 여러 개면 아래에 단원 버튼
+  var MAIN = ["kor","eng","math","sci","soc","hist"];
+  var L = {subj: null, cur: null};
   function lessonById(id){ for(var i = 0; i < LESSONS.length; i++) if(LESSONS[i].id === id) return LESSONS[i]; return null; }
-  function latestDay(){ return LESSONS.length ? LESSONS[0].date : null; }
+  function lessonsOf(k){ return LESSONS.filter(function(x){ return x.subj === k; }); }
+  function defaultSubj(){ return LESSONS.length ? LESSONS[0].subj : "hist"; }
   function renderStudy(){
-    var day = latestDay();
-    if(!day){ $("lEmpty").hidden = false; $("lFrame").hidden = true; $("lWhen").textContent = ""; return; }
-    var cur = L.cur && lessonById(L.cur);
-    var showDay = cur && L.past ? cur.date : day;
-    var list = LESSONS.filter(function(x){ return x.date === showDay; });
-    if(!cur || (!L.past && cur.date !== day)) cur = list[0];
-    $("lWhen").textContent = (showDay === today() ? "오늘 배운 것 · " : (L.past ? "지난 공부 · " : "가장 최근에 배운 것 · ")) + nice(showDay);
-    var pick = $("lPick"); pick.textContent = "";
-    if(list.length > 1) list.forEach(function(x){
-      pick.appendChild(el("button", {type:"button", class:gcls(x.subj), "aria-pressed": String(x.id === cur.id), onclick:function(){ openLesson(x.id, L.past); }},
-        [el("b", {text: sname(x.subj) + " · " + x.title}), el("span", {text: x.pages})]));
+    if(!L.subj || !SUBJ[L.subj]) L.subj = uiGet("lsubj", "") || defaultSubj();
+    if(!SUBJ[L.subj]) L.subj = defaultSubj();
+    var t = today();
+    // 과목 줄: 단원이 있는 과목(최근 순) + 주요 과목 중 아직 없는 것
+    var has = [], seen = {};
+    LESSONS.forEach(function(x){ if(!seen[x.subj]){ seen[x.subj] = 1; has.push(x.subj); } });
+    var row = $("lSubj"); row.textContent = "";
+    has.concat(MAIN.filter(function(k){ return !seen[k]; })).forEach(function(k){
+      var ls = lessonsOf(k), isToday = ls.some(function(x){ return x.date === t; });
+      row.appendChild(el("button", {type:"button", class:"chip " + gcls(k) + (ls.length ? "" : " none"), "aria-pressed": String(L.subj === k),
+        onclick:function(){ L.subj = k; L.cur = null; uiSet("lsubj", k); renderStudy(); }},
+        [sname(k), ls.length ? el("span", {class:"cnt", text: isToday ? "오늘" : String(ls.length)}) : null]));
     });
-    var pn = $("lPast"); pn.textContent = ""; pn.hidden = !L.past;
-    if(L.past) pn.appendChild(el("span", {text:"지난 공부를 보고 있어요."})), pn.appendChild(el("button", {class:"linkbtn", type:"button", text:"최근 공부로 돌아가기 →", onclick:function(){ L.past = false; L.cur = null; renderStudy(); }}));
+    var list = lessonsOf(L.subj);
+    var pick = $("lPick"); pick.textContent = "";
+    if(!list.length){
+      $("lWhen").textContent = sname(L.subj);
+      $("lFrame").hidden = true; $("lFrame").removeAttribute("data-id");
+      $("lEmpty").hidden = false;
+      $("lEmpty").textContent = sname(L.subj) + " 단원은 아직 없어요. 엄마가 교과서 쪽수나 사진을 보내 주면 여기에 만들어져요.";
+      return;
+    }
+    $("lEmpty").hidden = true; $("lFrame").hidden = false;
+    var cur = L.cur && lessonById(L.cur);
+    if(!cur || cur.subj !== L.subj) cur = list[0];
+    $("lWhen").textContent = sname(L.subj) + " · " + (cur.date === t ? "오늘 배운 단원" : nice(cur.date) + "에 배운 단원");
+    if(list.length > 1) list.forEach(function(x){
+      pick.appendChild(el("button", {type:"button", class:gcls(x.subj), "aria-pressed": String(x.id === cur.id), onclick:function(){ L.cur = x.id; renderStudy(); }},
+        [el("b", {text: x.title}), el("span", {text: nice(x.date) + " · " + x.pages})]));
+    });
     loadFrame(cur);
   }
   function loadFrame(x){
-    var f = $("lFrame"), src = x.file + "?embed=1";
-    if(f.getAttribute("data-id") === x.id) return;
-    f.setAttribute("data-id", x.id); f.style.height = "70vh"; f.src = src;
+    var f = $("lFrame");
     L.cur = x.id;
+    if(f.getAttribute("data-id") === x.id) return;
+    f.setAttribute("data-id", x.id); f.style.height = "70vh"; f.src = x.file + "?embed=1";
   }
-  function openLesson(id, past){ var x = lessonById(id); L.cur = id; L.past = !!past && !!x && x.date !== latestDay(); showTab("study"); renderStudy(); window.scrollTo({top:0}); }
+  function openLesson(id){ var x = lessonById(id); if(!x) return; L.subj = x.subj; L.cur = id; uiSet("lsubj", x.subj); showTab("study"); window.scrollTo({top:0}); }
   // 단원 페이지 높이만큼 늘린다 (같은 주소라 안을 읽을 수 있다)
   var ro = null;
   function fit(){ var f = $("lFrame"); try{ var h = f.contentDocument.documentElement.scrollHeight; if(h) f.style.height = h + "px"; }catch(e){} }
@@ -694,7 +716,7 @@ input[type=date]{-webkit-appearance:none;appearance:none;min-height:44px;width:a
       var best = 0; st.quiz.forEach(function(q){ if(q.n && q.r / q.n > best) best = q.r / q.n; });
       var dots = el("span", {class:"mini-dots", "aria-label":"할 일 " + nPlan + " / " + (x.plan || 4)});
       for(var i = 0; i < (x.plan || 4); i++) dots.appendChild(el("i", {class: i < nPlan ? "on" : ""}));
-      ul.appendChild(el("li", {class:gcls(x.subj), style:"cursor:pointer", onclick:function(){ openLesson(x.id, true); }}, [
+      ul.appendChild(el("li", {class:gcls(x.subj), style:"cursor:pointer", onclick:function(){ openLesson(x.id); }}, [
         el("div", {class:"d"}, [(d.getMonth() + 1) + "월", el("b", {text:String(d.getDate())})]),
         el("div", {class:"t"}, [el("b", {text:x.title}), el("span", {text: sname(x.subj) + " · " + x.unit + " · " + x.pages})]),
         el("div", {class:"prog"}, [dots, el("span", {text: st.quiz.length ? "퀴즈 최고 " + Math.round(best * 100) + "점" : "퀴즈 아직"})])
